@@ -92,6 +92,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resourses\CreateOracleTables.sql" />
     <Content Include="supermarketModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>supermarketModel.edmx</DependentUpon>
