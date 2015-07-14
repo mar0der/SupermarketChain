@@ -56,7 +56,7 @@
     <Compile Include="Product.cs">
       <DependentUpon>supermarketModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="SupermarketChainMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="supermarketModel.Context.cs">
       <AutoGen>True</AutoGen>
