@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0CECA10-705D-4EDA-BF17-6305F3C47E90}</ProjectGuid>
+    <ProjectGuid>{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SupermarketChainMain</RootNamespace>
-    <AssemblyName>SupermarketChainMain</AssemblyName>
+    <RootNamespace>oracledb</RootNamespace>
+    <AssemblyName>oracledb</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,8 +38,16 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    <Reference Include="Oracle.DataAccess, Version=2.112.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Oracle.DataAccess.x86.2.112.1.0\lib\Oracle.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.022\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess.EntityFramework, Version=6.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.EntityFramework.12.1.022\lib\net45\Oracle.ManagedDataAccess.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -53,59 +61,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreLogic\Engine.cs" />
-    <Compile Include="Measure.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
+    <Compile Include="MEASURE.cs">
+      <DependentUpon>OracleContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Product.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
+    <Compile Include="OracleContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleContext.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="SupermarketChainMain.cs" />
+    <Compile Include="OracleContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OracleContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OracleContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PRODUCT.cs">
+      <DependentUpon>OracleContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="supermarketModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>supermarketModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="supermarketModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="supermarketModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Vendor.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
+    <Compile Include="VENDOR.cs">
+      <DependentUpon>OracleContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
-    <EntityDeploy Include="supermarketModel.edmx">
+    <EntityDeploy Include="OracleContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>supermarketModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>OracleContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="supermarketModel.edmx.diagram">
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
+    <None Include="OracleContext.edmx.diagram">
+      <DependentUpon>OracleContext.edmx</DependentUpon>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resourses\CreateOracleTables.sql" />
-    <Content Include="supermarketModel.Context.tt">
+    <Content Include="OracleContext.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-      <LastGenOutput>supermarketModel.Context.cs</LastGenOutput>
+      <DependentUpon>OracleContext.edmx</DependentUpon>
+      <LastGenOutput>OracleContext.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="supermarketModel.tt">
+    <Content Include="OracleContext.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-      <LastGenOutput>supermarketModel.cs</LastGenOutput>
+      <DependentUpon>OracleContext.edmx</DependentUpon>
+      <LastGenOutput>OracleContext.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
