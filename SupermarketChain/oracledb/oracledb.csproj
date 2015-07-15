@@ -7,8 +7,8 @@
     <ProjectGuid>{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>oracledb</RootNamespace>
-    <AssemblyName>oracledb</AssemblyName>
+    <RootNamespace>OracleDB</RootNamespace>
+    <AssemblyName>OeacleDB</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -82,7 +82,7 @@
     <Compile Include="PRODUCT.cs">
       <DependentUpon>OracleContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="OracleMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VENDOR.cs">
       <DependentUpon>OracleContext.tt</DependentUpon>

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace oracledb
+namespace OracleDB
 {
     using System;
     using System.Collections.Generic;
