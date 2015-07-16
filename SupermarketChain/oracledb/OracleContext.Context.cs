@@ -13,9 +13,9 @@ namespace OracleDB
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class OracleModel : DbContext
+    public partial class OracleContext : DbContext
     {
-        public OracleModel()
+        public OracleContext()
             : base("name=OracleModel")
         {
         }

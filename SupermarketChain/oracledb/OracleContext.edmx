@@ -9,14 +9,14 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MEASURE_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="PRODUCTS">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="VENDOR_ID" Type="number" Precision="10" Scale="0" Nullable="false" />
           <Property Name="PRODUCT_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
           <Property Name="MEASURE_ID" Type="number" Precision="10" Scale="0" Nullable="false" />
@@ -26,7 +26,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="10" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="VENDOR_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="PRODUCTS_MEASURES_FK">
@@ -74,7 +74,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MEASURE_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_MEASURES_FK" FromRole="MEASURES" ToRole="PRODUCTS" />
         </EntityType>
@@ -82,7 +82,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VENDOR_ID" Type="Int32" Nullable="false" />
           <Property Name="PRODUCT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MEASURE_ID" Type="Int32" Nullable="false" />
@@ -94,7 +94,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VENDOR_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="PRODUCTS" Relationship="Self.PRODUCTS_VENDORS_FK" FromRole="VENDORS" ToRole="PRODUCTS" />
         </EntityType>

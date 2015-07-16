@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("oracledb")]
+[assembly: AssemblyTitle("SupermarketChain.MSSQLData")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("oracledb")]
+[assembly: AssemblyProduct("SupermarketChain.MSSQLData")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("514ab4be-6e67-43e0-9f6d-734cd962462d")]
+[assembly: Guid("6994ea8b-6e83-468e-b3a1-985a245e0ba3")]
 
 // Version information for an assembly consists of the following four values:
 //      Major Version

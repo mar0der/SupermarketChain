@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C0CECA10-705D-4EDA-BF17-6305F3C47E90}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SupermarketChainMain</RootNamespace>
     <AssemblyName>SupermarketChainMain</AssemblyName>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -38,6 +41,7 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Oracle.ManagedDataAccess">
       <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
@@ -54,62 +58,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreLogic\Engine.cs" />
-    <Compile Include="Measure.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Product.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="SupermarketChainMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="supermarketModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>supermarketModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="supermarketModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="supermarketModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Vendor.cs">
-      <DependentUpon>supermarketModel.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="supermarketModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>supermarketModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="supermarketModel.edmx.diagram">
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resourses\CreateOracleTables.sql" />
-    <Content Include="supermarketModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-      <LastGenOutput>supermarketModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="supermarketModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>supermarketModel.edmx</DependentUpon>
-      <LastGenOutput>supermarketModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\oracledb\SuperMarketChain.OracleModel.csproj">
+      <Project>{ce7989e8-72a5-4526-a82e-c2d75d9da3ac}</Project>
+      <Name>SuperMarketChain.OracleModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SupermarketChain.MSSQLData\MSSQLData.csproj">
+      <Project>{8d8b1026-0700-4472-93ea-4f994c592316}</Project>
+      <Name>MSSQLData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SupermarketChain.MSSQLModels\MSSQLModels.csproj">
+      <Project>{8b8a0a38-3376-4188-80af-ffb230e6fe8c}</Project>
+      <Name>MSSQLModels</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

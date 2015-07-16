@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupermarketChainMain", "SupermarketChainMain\SupermarketChainMain.csproj", "{C0CECA10-705D-4EDA-BF17-6305F3C47E90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketChain.OracleData", "oracledb\SuperMarketChain.OracleData.csproj", "{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleDB", "oracledb\OracleDB.csproj", "{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oracle", "Oracle", "{4B038118-5003-4111-B91A-257ADAC889F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSSQL", "MSSQL", "{EA7ACC9E-8123-461E-8C0C-BB625570D1E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketChain.MSSQLModels", "SupermarketChain.MSSQLModels\SuperMarketChain.MSSQLModels.csproj", "{8B8A0A38-3376-4188-80AF-FFB230E6FE8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketChain.MSSQLData", "SupermarketChain.MSSQLData\SuperMarketChain.MSSQLData.csproj", "{8D8B1026-0700-4472-93EA-4F994C592316}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supermarket.CnsoleApp", "Supermarket.CnsoleApp\Supermarket.CnsoleApp.csproj", "{19431B0A-02E9-4903-8FED-9110F544300A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +21,29 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C0CECA10-705D-4EDA-BF17-6305F3C47E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0CECA10-705D-4EDA-BF17-6305F3C47E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0CECA10-705D-4EDA-BF17-6305F3C47E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0CECA10-705D-4EDA-BF17-6305F3C47E90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8A0A38-3376-4188-80AF-FFB230E6FE8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8A0A38-3376-4188-80AF-FFB230E6FE8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8A0A38-3376-4188-80AF-FFB230E6FE8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8A0A38-3376-4188-80AF-FFB230E6FE8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D8B1026-0700-4472-93EA-4F994C592316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D8B1026-0700-4472-93EA-4F994C592316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D8B1026-0700-4472-93EA-4F994C592316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D8B1026-0700-4472-93EA-4F994C592316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19431B0A-02E9-4903-8FED-9110F544300A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19431B0A-02E9-4903-8FED-9110F544300A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19431B0A-02E9-4903-8FED-9110F544300A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19431B0A-02E9-4903-8FED-9110F544300A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC} = {4B038118-5003-4111-B91A-257ADAC889F5}
+		{8B8A0A38-3376-4188-80AF-FFB230E6FE8C} = {EA7ACC9E-8123-461E-8C0C-BB625570D1E7}
+		{8D8B1026-0700-4472-93EA-4F994C592316} = {EA7ACC9E-8123-461E-8C0C-BB625570D1E7}
 	EndGlobalSection
 EndGlobal
