@@ -32,16 +32,6 @@
                     Console.WriteLine(vendor.VendorName);
                 }
             }
-
-            using (var odb = new OracleContext())
-            {
-                var vendors = odb.VENDORS;
-
-                foreach (var vendor in vendors)
-                {
-                    Console.WriteLine(vendor.VENDOR_NAME);
-                }
-            }
         }
     }
 }

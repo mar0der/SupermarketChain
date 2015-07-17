@@ -88,13 +88,9 @@
       <Project>{ce7989e8-72a5-4526-a82e-c2d75d9da3ac}</Project>
       <Name>SuperMarketChain.OracleData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SupermarketChain.MSSQLData\SuperMarketChain.MSSQLData.csproj">
-      <Project>{8d8b1026-0700-4472-93ea-4f994c592316}</Project>
-      <Name>SuperMarketChain.MSSQLData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SupermarketChain.MSSQLModels\SuperMarketChain.MSSQLModels.csproj">
-      <Project>{8b8a0a38-3376-4188-80af-ffb230e6fe8c}</Project>
-      <Name>SuperMarketChain.MSSQLModels</Name>
+    <ProjectReference Include="..\SupermarketChain.MSSQL\SupermarketChain.MSSQL.csproj">
+      <Project>{c54e6c66-232c-405b-b8ec-0920c5a0c662}</Project>
+      <Name>SupermarketChain.MSSQL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
