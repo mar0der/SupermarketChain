@@ -33,15 +33,15 @@
                 }
             }
 
-            //using (var odb = new OracleContext())
-            //{
-            //    var vendors = odb.VENDORS;
+            using (var odb = new OracleContext())
+            {
+                var vendors = odb.VENDORS;
 
-            //    foreach (var vendor in vendors)
-            //    {
-            //        Console.WriteLine(vendor.VENDOR_NAME);
-            //    }
-            //}
+                foreach (var vendor in vendors)
+                {
+                    Console.WriteLine(vendor.VENDOR_NAME);
+                }
+            }
         }
     }
 }
