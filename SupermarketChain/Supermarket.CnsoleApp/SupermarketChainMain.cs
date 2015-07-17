@@ -17,31 +17,31 @@
     {
         private static void Main()
         {
-            //using (var db = new MSSQLContext())
-            //{
-            //    Console.WriteLine("Enter Vendor Name:");
-            //    var vendorName = Console.ReadLine();
-            //    var newVendor = new Vendor { VendorName = vendorName };
-            //    db.Vendors.Add(newVendor);
-            //    db.SaveChanges();
-
-            //    // show all vendors
-            //    var query = from v in db.Vendors orderby v.VendorName select v;
-            //    foreach (var vendor in query)
-            //    {
-            //        Console.WriteLine(vendor.VendorName);
-            //    }
-            //}
-
-            using (var odb = new OracleContext())
+            using (var db = new MSSQLContext())
             {
-                var vendors = odb.VENDORS;
+                Console.WriteLine("enter vendor name:");
+                var vendorname = Console.ReadLine();
+                var newvendor = new Vendor { VendorName = vendorname };
+                db.Vendors.Add(newvendor);
+                db.SaveChanges();
 
-                foreach (var vendor in vendors)
+                // show all vendors
+                var query = from v in db.Vendors orderby v.VendorName select v;
+                foreach (var vendor in query)
                 {
-                    Console.WriteLine(vendor.VENDOR_NAME);
+                    Console.WriteLine(vendor.VendorName);
                 }
             }
+
+            //using (var odb = new OracleContext())
+            //{
+            //    var vendors = odb.VENDORS;
+
+            //    foreach (var vendor in vendors)
+            //    {
+            //        Console.WriteLine(vendor.VENDOR_NAME);
+            //    }
+            //}
         }
     }
 }
