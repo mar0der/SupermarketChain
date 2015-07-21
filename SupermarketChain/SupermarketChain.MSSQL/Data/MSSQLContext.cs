@@ -18,12 +18,12 @@ namespace MSSQLDB
         public MSSQLContext()
             : base("name=MSSQLContext")
         {
-
+            
         }
 
         public virtual DbSet<Vendor> Vendors { get; set; }
 
-        public virtual DbSet<Measure> Mesures { get; set; }
+        public virtual DbSet<Measure> Measures { get; set; }
 
         public virtual DbSet<Product> Products { get; set; }
     }

@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\MSSQLContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Measure.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Vendor.cs" />

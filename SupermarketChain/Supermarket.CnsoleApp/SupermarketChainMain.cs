@@ -17,19 +17,49 @@
     {
         private static void Main()
         {
-            using (var db = new MSSQLContext())
+            using (var mssqlContext = new MSSQLContext())
+            using (var oracleContext = new OracleContext())
             {
-                Console.WriteLine("enter vendor name:");
-                var vendorname = Console.ReadLine();
-                var newvendor = new Vendor { VendorName = vendorname };
-                db.Vendors.Add(newvendor);
-                db.SaveChanges();
-
-                // show all vendors
-                var query = from v in db.Vendors orderby v.VendorName select v;
-                foreach (var vendor in query)
+                foreach (var measure in oracleContext.MEASURES)
                 {
-                    Console.WriteLine(vendor.VendorName);
+                    if (!mssqlContext.Measures.Any(m => m.Name == measure.MEASURE_NAME))
+                    {
+                        mssqlContext.Measures.Add(new Measure()
+                        {
+                            Name = measure.MEASURE_NAME
+                        });
+
+                        mssqlContext.SaveChanges();   
+                    }
+                }
+
+                foreach (var vendor in oracleContext.VENDORS)
+                {
+                    if (!mssqlContext.Vendors.Any(v => v.VendorName == vendor.VENDOR_NAME))
+                    {
+                        mssqlContext.Vendors.Add(new Vendor()
+                        {
+                            VendorName = vendor.VENDOR_NAME
+                        });
+
+                        mssqlContext.SaveChanges();
+                    }
+                }
+
+                foreach (var product in oracleContext.PRODUCTS)
+                {
+                    if (!mssqlContext.Products.Any(p => p.ProductName == product.PRODUCT_NAME))
+                    {
+                        mssqlContext.Products.Add(new Product()
+                        {
+                            ProductName = product.PRODUCT_NAME,
+                            Price = product.PRICE,
+                            MeasureId = product.MEASURE_ID,
+                            VendorId = product.VENDOR_ID
+                        });
+
+                        mssqlContext.SaveChanges();
+                    }
                 }
             }
         }

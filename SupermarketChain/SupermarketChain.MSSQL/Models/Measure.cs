@@ -20,7 +20,7 @@
 
             using (var context = new MSSQLContext())
             {
-                this.Id = (context.Mesures.Any() ? context.Mesures.Max(m => m.Id) + 100 : 100);
+                this.Id = (context.Measures.Any() ? context.Measures.Max(m => m.Id) + 100 : 100);
             }
         }
 
