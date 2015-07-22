@@ -7,8 +7,8 @@
     <ProjectGuid>{19431B0A-02E9-4903-8FED-9110F544300A}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Supermarket.CnsoleApp</RootNamespace>
-    <AssemblyName>Supermarket.CnsoleApp</AssemblyName>
+    <RootNamespace>Supermarket.ConsoleApp</RootNamespace>
+    <AssemblyName>Supermarket.ConsoleApp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Supermarket.CnsoleApp.SupermarketChainMain</StartupObject>
+    <StartupObject>Supermarket.ConsoleApp.SupermarketChainMain</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -74,6 +74,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AbstractCommand.cs" />
+    <Compile Include="Commands\Exeptions\CommandExeption.cs" />
+    <Compile Include="Factories\CommandFactory.cs" />
+    <Compile Include="Commands\Problem2Command.cs" />
+    <Compile Include="Constants\Messages.cs" />
+    <Compile Include="CoreLogic\Engine.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
+    <Compile Include="Interfaces\IEngine.cs" />
+    <Compile Include="Interfaces\IExecutable.cs" />
     <Compile Include="SupermarketChainMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -110,6 +119,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
