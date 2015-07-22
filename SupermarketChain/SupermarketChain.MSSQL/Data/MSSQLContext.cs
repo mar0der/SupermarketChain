@@ -15,13 +15,8 @@ namespace MSSQLDB
 
     public class MSSQLContext : DbContext
     {
-        // Your context has been configured to use a 'MSSQLContext' connection string from your application's 
-        // configuration file (App.config or Web.config). By default, this connection string targets the 
-        // 'SupermarketChain.MSSQLData.MSSQLContext' database on your LocalDb instance. 
-        // If you wish to target a different database and/or database provider, modify the 'MSSQLContext' 
-        // connection string in the application configuration file.
         public MSSQLContext()
-            : base("name=MSSQLContext")
+            : base("MSSQLContext")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<MSSQLContext, Configuration>());
         }
@@ -51,7 +46,6 @@ namespace MSSQLDB
                 .HasMany(p => p.SupermarketProducts)
                 .WithRequired(sp => sp.Product)
                 .HasForeignKey(sp => sp.ProductId);
-            Console.WriteLine("ssss");
             base.OnModelCreating(modelBuilder);
         }
     }
