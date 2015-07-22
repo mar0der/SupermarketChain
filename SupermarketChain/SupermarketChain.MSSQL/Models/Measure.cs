@@ -6,6 +6,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
+
     using MSSQLDB;
 
     #endregion
@@ -20,11 +21,12 @@
 
             using (var context = new MSSQLContext())
             {
-                this.Id = (context.Measures.Any() ? context.Measures.Max(m => m.Id) + 100 : 100);
+                this.Id = context.Measures.Any() ? context.Measures.Max(m => m.Id) + 100 : 100;
             }
         }
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Required]

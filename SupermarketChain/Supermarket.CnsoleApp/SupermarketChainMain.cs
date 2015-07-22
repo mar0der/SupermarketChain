@@ -17,51 +17,59 @@
     {
         private static void Main()
         {
-            using (var mssqlContext = new MSSQLContext())
-            using (var oracleContext = new OracleContext())
-            {
-                foreach (var measure in oracleContext.MEASURES)
-                {
-                    if (!mssqlContext.Measures.Any(m => m.Name == measure.MEASURE_NAME))
-                    {
-                        mssqlContext.Measures.Add(new Measure()
-                        {
-                            Name = measure.MEASURE_NAME
-                        });
+            var db = new MSSQLContext();
+            Console.WriteLine(db.Measures.Count());
 
-                        mssqlContext.SaveChanges();   
-                    }
-                }
+            //using (var mssqlContext = new MSSQLContext())
+            //using (var oracleContext = new OracleContext())
+            //{
 
-                foreach (var vendor in oracleContext.VENDORS)
-                {
-                    if (!mssqlContext.Vendors.Any(v => v.VendorName == vendor.VENDOR_NAME))
-                    {
-                        mssqlContext.Vendors.Add(new Vendor()
-                        {
-                            VendorName = vendor.VENDOR_NAME
-                        });
+            //    //var count = mssqlContext.Measures.Count();
+            //    var countOracucheta = oracleContext.MEASURES.Count();
+            //    Console.WriteLine(countOracucheta);
+            //    //Console.WriteLine(count);
+            //    foreach (var measure in oracleContext.MEASURES)
+            //    {
+            //        if (!mssqlContext.Measures.Any(m => m.Name == measure.MEASURE_NAME))
+            //        {
+            //            mssqlContext.Measures.Add(new Measure()
+            //            {
+            //                Name = measure.MEASURE_NAME
+            //            });
 
-                        mssqlContext.SaveChanges();
-                    }
-                }
+            //            mssqlContext.SaveChanges();   
+            //        }
+            //    }
 
-                foreach (var product in oracleContext.PRODUCTS)
-                {
-                    if (!mssqlContext.Products.Any(p => p.ProductName == product.PRODUCT_NAME))
-                    {
-                        mssqlContext.Products.Add(new Product()
-                        {
-                            ProductName = product.PRODUCT_NAME,
-                            Price = product.PRICE,
-                            MeasureId = product.MEASURE_ID,
-                            VendorId = product.VENDOR_ID
-                        });
+            //    foreach (var vendor in oracleContext.VENDORS)
+            //    {
+            //        if (!mssqlContext.Vendors.Any(v => v.VendorName == vendor.VENDOR_NAME))
+            //        {
+            //            mssqlContext.Vendors.Add(new Vendor()
+            //            {
+            //                VendorName = vendor.VENDOR_NAME
+            //            });
 
-                        mssqlContext.SaveChanges();
-                    }
-                }
-            }
+            //            mssqlContext.SaveChanges();
+            //        }
+            //    }
+
+            //    foreach (var product in oracleContext.PRODUCTS)
+            //    {
+            //        if (!mssqlContext.Products.Any(p => p.ProductName == product.PRODUCT_NAME))
+            //        {
+            //            mssqlContext.Products.Add(new Product()
+            //            {
+            //                ProductName = product.PRODUCT_NAME,
+            //                Price = product.PRICE,
+            //                MeasureId = product.MEASURE_ID,
+            //                VendorId = product.VENDOR_ID
+            //            });
+
+            //            mssqlContext.SaveChanges();
+            //        }
+            //    }
+            //}
         }
     }
 }

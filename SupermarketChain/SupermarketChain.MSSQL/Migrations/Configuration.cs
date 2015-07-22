@@ -9,7 +9,8 @@ namespace SupermarketChain.MSSQL.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(MSSQLDB.MSSQLContext context)

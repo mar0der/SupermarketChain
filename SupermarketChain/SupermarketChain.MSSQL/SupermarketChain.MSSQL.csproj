@@ -52,17 +52,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\MSSQLContext.cs" />
+    <Compile Include="Migrations\201507212215061_SupermarketAdded.cs" />
+    <Compile Include="Migrations\201507212215061_SupermarketAdded.Designer.cs">
+      <DependentUpon>201507212215061_SupermarketAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Measure.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Supermarket.cs" />
     <Compile Include="Models\Vendor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\SupermarketProduct.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201507212215061_SupermarketAdded.resx">
+      <DependentUpon>201507212215061_SupermarketAdded.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

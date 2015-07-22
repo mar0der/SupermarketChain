@@ -6,12 +6,20 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketChain.OracleData", "oracledb\SuperMarketChain.OracleData.csproj", "{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oracle", "Oracle", "{4B038118-5003-4111-B91A-257ADAC889F5}"
+	ProjectSection(SolutionItems) = preProject
+		oracledb\Resources\CreateOracleTables.sql = oracledb\Resources\CreateOracleTables.sql
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSSQL", "MSSQL", "{EA7ACC9E-8123-461E-8C0C-BB625570D1E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supermarket.CnsoleApp", "Supermarket.CnsoleApp\Supermarket.CnsoleApp.csproj", "{19431B0A-02E9-4903-8FED-9110F544300A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupermarketChain.MSSQL", "SupermarketChain.MSSQL\SupermarketChain.MSSQL.csproj", "{C54E6C66-232C-405B-B8EC-0920C5A0C662}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{599F2C53-A0C0-4C20-88D2-5ECC06AD0467}"
+	ProjectSection(SolutionItems) = preProject
+		oracledb\Resources\CreateOracleTables.sql = oracledb\Resources\CreateOracleTables.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +46,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC} = {4B038118-5003-4111-B91A-257ADAC889F5}
 		{C54E6C66-232C-405B-B8EC-0920C5A0C662} = {EA7ACC9E-8123-461E-8C0C-BB625570D1E7}
+		{599F2C53-A0C0-4C20-88D2-5ECC06AD0467} = {4B038118-5003-4111-B91A-257ADAC889F5}
 	EndGlobalSection
 EndGlobal

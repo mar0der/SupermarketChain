@@ -2,13 +2,25 @@
 {
     #region
 
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Core.Metadata.Edm;
+
+    using SupermarketChain.MSSQL;
+    using SupermarketChain.MSSQL.Models;
 
     #endregion
 
     public class Product
     {
+        private ICollection<SupermarketProduct> supermarketProducts;
+
+        public Product()
+        {
+            this.supermarketProducts = new HashSet<SupermarketProduct>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -31,5 +43,18 @@
 
         [ForeignKey("VendorId")]
         public virtual Vendor Vendor { get; set; }
+
+        public ICollection<SupermarketProduct> SupermarketProducts
+        {
+            get
+            {
+                return this.supermarketProducts;
+            }
+
+            set
+            {
+                this.supermarketProducts = value;
+            }
+        }
     }
 }
