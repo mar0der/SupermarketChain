@@ -27,7 +27,7 @@
         {
             while (this.HasStarted)
             {
-                Console.Write("Enter command:");
+                Console.Write("Enter command, help or exit:");
                 this.ExecuteCommandLoop();
             }
         }
