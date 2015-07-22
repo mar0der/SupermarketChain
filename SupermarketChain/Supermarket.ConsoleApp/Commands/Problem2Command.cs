@@ -1,4 +1,13 @@
-﻿namespace Supermarket.ConsoleApp.Commands
+﻿using System;
+using System.Data.Entity.Migrations;
+using System.IO;
+using GemBox.Spreadsheet;
+using Ionic.Zip;
+using Supermarket.ConsoleApp.Constants;
+using Supermarket.ConsoleApp.Interfaces;
+using SupermarketChain.MSSQL;
+
+namespace Supermarket.ConsoleApp.Commands
 {
     #region
 
@@ -22,17 +31,17 @@
         {
         }
 
-        public override void Execute()
+        private void CopyOracleDataToSqlServer()
         {
             using (var mssqlContext = new MSSQLContext())
             using (var oracleContext = new OracleContext())
             {
-
                 //replicating measures
                 foreach (var measure in oracleContext.MEASURES)
                 {
                     if (!mssqlContext.Measures.Any(m => m.Name == measure.MEASURE_NAME))
                     {
+  
                         mssqlContext.Measures.Add(new Measure { Name = measure.MEASURE_NAME });
 
                         mssqlContext.SaveChanges();
@@ -61,12 +70,12 @@
                     {
                         mssqlContext.Products.Add(
                             new Product
-                                {
-                                    ProductName = product.PRODUCT_NAME, 
-                                    Price = product.PRICE, 
-                                    MeasureId = product.MEASURE_ID, 
-                                    VendorId = product.VENDOR_ID
-                                });
+                            {
+                                ProductName = product.PRODUCT_NAME,
+                                Price = product.PRICE,
+                                MeasureId = product.MEASURE_ID,
+                                VendorId = product.VENDOR_ID
+                            });
 
                         mssqlContext.SaveChanges();
                     }
@@ -74,7 +83,94 @@
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlProducts);
             }
-            this.Engine.Output.AppendLine(Messages.Oracle2MssqlSuccess);
+            this.Engine.Output.AppendLine(Messages.Oracle2MssqlSuccess); 
+        }
+
+        private void InsertDataFromExcelFile(string filepath)
+        {
+            using (Ionic.Zip.ZipFile zipFile = Ionic.Zip.ZipFile.Read("F:\\testzip.zip"))
+            using (var mssqlContext = new MSSQLContext())
+            {
+                SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+
+                DateTime theDate = DateTime.Now;
+                bool changed = false;
+
+                foreach (ZipEntry zip in zipFile)
+                {
+                    if (changed == true)
+                    {
+                        Console.WriteLine(theDate.ToString());
+                    }
+                    changed = false;
+
+                    if (zip.IsDirectory)
+                    {
+                        theDate = DateTime.Parse(zip.FileName.Substring(0, zip.FileName.Length - 1));
+                        changed = true;
+                    }
+                    else
+                    {
+                        zip.Extract();
+
+                        ExcelFile excelFile = ExcelFile.Load(zip.FileName);
+
+                        string supermarketName = string.Empty;
+
+                        foreach (ExcelWorksheet sheet in excelFile.Worksheets)
+                        {
+                            supermarketName = (string)sheet.Rows[1].AllocatedCells[1].Value;
+                            supermarketName = supermarketName.Substring(13, supermarketName.Length - 14);
+
+                            if (!mssqlContext.Supermarkets.Any(s => s.Name == supermarketName))
+                            {
+                                mssqlContext.Supermarkets.AddOrUpdate(new SupermarketChain.MSSQL.Models.Supermarket()
+                                {
+                                    Name = supermarketName
+                                });
+
+                                mssqlContext.SaveChanges();
+                            }
+
+                            int currentRowsLength = sheet.Rows.Count;
+
+                            Console.WriteLine(supermarketName);
+
+                            foreach (ExcelRow row in sheet.Rows)
+                            {
+                                if (row.Index > 2 && row.Index < currentRowsLength - 1)
+                                {
+                                    string productName = (string) row.AllocatedCells[1].Value;
+                                    int quantity = row.AllocatedCells[2].IntValue;
+
+                                    mssqlContext.SupermarketProducts.Add(new SupermarketProduct()
+                                    {
+                                        ProductId = mssqlContext.Products.First(p => p.ProductName == productName).Id,
+                                        SupermarketId = mssqlContext.Supermarkets.First(s => s.Name == supermarketName).Id,
+                                        Quantity = quantity,
+                                        SaleDate = theDate
+                                    });
+
+                                    mssqlContext.SaveChanges();
+                                    Console.WriteLine("--- {0}, {1}",
+                                        row.AllocatedCells[1].Value,
+                                        row.AllocatedCells[2].Value);
+                                }
+                            }    
+                        }
+
+
+                        File.Delete(zip.FileName);
+                        Directory.Delete(Directory.GetParent(zip.FileName).FullName);
+                    }
+                }
+            }
+        }
+
+        public override void Execute()
+        {
+            this.CopyOracleDataToSqlServer();
+            this.InsertDataFromExcelFile("temp");
         }
     }
 }

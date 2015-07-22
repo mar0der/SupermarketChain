@@ -46,6 +46,9 @@ namespace MSSQLDB
                 .HasMany(p => p.SupermarketProducts)
                 .WithRequired(sp => sp.Product)
                 .HasForeignKey(sp => sp.ProductId);
+
+            modelBuilder.Entity<SupermarketProduct>()
+                .HasKey(sp => new {sp.ProductId, sp.SupermarketId, sp.Quantity, sp.SaleDate});
             base.OnModelCreating(modelBuilder);
         }
     }
