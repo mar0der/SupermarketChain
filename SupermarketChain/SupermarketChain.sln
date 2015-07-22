@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Supermarket.ConsoleApp", "Supermarket.ConsoleApp\Supermarket.ConsoleApp.csproj", "{19431B0A-02E9-4903-8FED-9110F544300A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MySQL", "MySQL", "{443AD8D8-B7A8-44C2-826B-422A7EB8A600}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SupermarketChain.MySQL", "SupermarketChain.MySQL\SupermarketChain.MySQL.csproj", "{E2CEE03D-EBDF-4ED0-8457-4C62D73029C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{19431B0A-02E9-4903-8FED-9110F544300A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19431B0A-02E9-4903-8FED-9110F544300A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19431B0A-02E9-4903-8FED-9110F544300A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2CEE03D-EBDF-4ED0-8457-4C62D73029C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2CEE03D-EBDF-4ED0-8457-4C62D73029C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2CEE03D-EBDF-4ED0-8457-4C62D73029C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2CEE03D-EBDF-4ED0-8457-4C62D73029C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +55,6 @@ Global
 		{CE7989E8-72A5-4526-A82E-C2D75D9DA3AC} = {4B038118-5003-4111-B91A-257ADAC889F5}
 		{C54E6C66-232C-405B-B8EC-0920C5A0C662} = {EA7ACC9E-8123-461E-8C0C-BB625570D1E7}
 		{599F2C53-A0C0-4C20-88D2-5ECC06AD0467} = {4B038118-5003-4111-B91A-257ADAC889F5}
+		{E2CEE03D-EBDF-4ED0-8457-4C62D73029C4} = {443AD8D8-B7A8-44C2-826B-422A7EB8A600}
 	EndGlobalSection
 EndGlobal
