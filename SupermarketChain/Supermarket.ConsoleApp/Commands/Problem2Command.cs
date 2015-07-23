@@ -3,8 +3,6 @@ using System.Data.Entity.Migrations;
 using System.IO;
 using GemBox.Spreadsheet;
 using Ionic.Zip;
-using Supermarket.ConsoleApp.Constants;
-using Supermarket.ConsoleApp.Interfaces;
 using SupermarketChain.MSSQL;
 
 namespace Supermarket.ConsoleApp.Commands
@@ -98,10 +96,6 @@ namespace Supermarket.ConsoleApp.Commands
 
                 foreach (ZipEntry zip in zipFile)
                 {
-                    if (changed == true)
-                    {
-                        Console.WriteLine(theDate.ToString());
-                    }
                     changed = false;
 
                     if (zip.IsDirectory)
@@ -134,8 +128,6 @@ namespace Supermarket.ConsoleApp.Commands
 
                             int currentRowsLength = sheet.Rows.Count;
 
-                            Console.WriteLine(supermarketName);
-
                             foreach (ExcelRow row in sheet.Rows)
                             {
                                 if (row.Index > 2 && row.Index < currentRowsLength - 1)
@@ -143,7 +135,7 @@ namespace Supermarket.ConsoleApp.Commands
                                     string productName = (string) row.AllocatedCells[1].Value;
                                     int quantity = row.AllocatedCells[2].IntValue;
 
-                                    mssqlContext.SupermarketProducts.Add(new SupermarketProduct()
+                                    mssqlContext.SupermarketProducts.AddOrUpdate(new SupermarketProduct()
                                     {
                                         ProductId = mssqlContext.Products.First(p => p.ProductName == productName).Id,
                                         SupermarketId = mssqlContext.Supermarkets.First(s => s.Name == supermarketName).Id,
@@ -152,13 +144,9 @@ namespace Supermarket.ConsoleApp.Commands
                                     });
 
                                     mssqlContext.SaveChanges();
-                                    Console.WriteLine("--- {0}, {1}",
-                                        row.AllocatedCells[1].Value,
-                                        row.AllocatedCells[2].Value);
                                 }
                             }    
                         }
-
 
                         File.Delete(zip.FileName);
                         Directory.Delete(Directory.GetParent(zip.FileName).FullName);
