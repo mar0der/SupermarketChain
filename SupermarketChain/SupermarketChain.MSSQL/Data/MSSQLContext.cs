@@ -31,6 +31,8 @@ namespace MSSQLDB
 
         public virtual DbSet<SupermarketProduct> SupermarketProducts { get; set; }
 
+        public virtual DbSet<Expense> Expenses { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 

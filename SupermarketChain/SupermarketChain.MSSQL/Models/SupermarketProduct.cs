@@ -23,14 +23,14 @@
         [ForeignKey("Product")]
         public int ProductId { get; set; }
 
-
         public virtual Supermarket Supermarket { get; set; }
-
 
         public virtual Product Product { get; set; }
 
         public DateTime SaleDate { get; set; }
 
         public int Quantity { get; set; }
+
+        public decimal UnitPrice { get; set; }
     }
 }

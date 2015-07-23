@@ -64,11 +64,11 @@ namespace Supermarket.ConsoleApp.Commands
                     {
                         mainTable.AddCell(new PdfPCell(new Phrase(record.Product.ProductName)));
                         mainTable.AddCell(new PdfPCell(new Phrase(record.Quantity.ToString())));
-                        mainTable.AddCell(new PdfPCell(new Phrase(record.Product.Price.ToString())));
+                        mainTable.AddCell(new PdfPCell(new Phrase(record.UnitPrice.ToString())));
                         mainTable.AddCell(new PdfPCell(new Phrase(record.Supermarket.Name)));
-                        mainTable.AddCell(new PdfPCell(new Phrase((record.Quantity * record.Product.Price).ToString())));
+                        mainTable.AddCell(new PdfPCell(new Phrase((record.Quantity * record.UnitPrice).ToString())));
 
-                        totalSum += record.Quantity*record.Product.Price;
+                        totalSum += record.Quantity * record.UnitPrice;
                     }
 
                     PdfPCell totalSumCellTitle = new PdfPCell(new Phrase("Total sum for " + date.Key.ToString("dd-MMMM-yyyy") + ":"));

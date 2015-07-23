@@ -33,7 +33,7 @@ namespace Supermarket.ConsoleApp.Commands
                     {
                         xmlWriter.WriteStartElement("summary");
                         xmlWriter.WriteAttributeString("date", record.SaleDate.ToString("dd-MMMM-yyyy"));
-                        xmlWriter.WriteAttributeString("total-sum", (record.Quantity * record.Product.Price).ToString()); 
+                        xmlWriter.WriteAttributeString("total-sum", (record.Quantity * record.UnitPrice).ToString()); 
                         xmlWriter.WriteEndElement();
                     }
 

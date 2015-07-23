@@ -7,15 +7,21 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using MSSQLDB;
+
+    using SupermarketChain.MSSQL.Models;
+
     #endregion
 
     public class Vendor
     {
         private ICollection<Product> products;
 
+        private ICollection<Expense> expenses; 
+
         public Vendor()
         {
-            this.products = new List<Product>();
+            this.products = new HashSet<Product>();
+            this.expenses = new HashSet<Expense>();
 
             using (var context = new MSSQLContext())
             {
@@ -39,6 +45,19 @@
             set
             {
                 this.products = value;
+            }
+        }
+
+        public virtual ICollection<Expense> Expenses
+        {
+            get
+            {
+                return this.expenses;
+            }
+
+            set
+            {
+                this.expenses = value;
             }
         }
     }

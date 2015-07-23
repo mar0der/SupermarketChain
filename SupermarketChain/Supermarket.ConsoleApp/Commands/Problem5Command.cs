@@ -46,7 +46,8 @@ namespace Supermarket.ConsoleApp.Commands
                     foreach (var record in productSale)
                     {
                         totalQuantitySoldSum += record.Quantity;
-                        totalIncomesSum += record.Quantity * record.Product.Price;
+                        totalIncomesSum += record.Quantity * record.UnitPrice
+                            ;
                     }
 
                     var jsonProduct = new

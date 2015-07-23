@@ -34,6 +34,7 @@ namespace Supermarket.ConsoleApp.Commands
             using (var mssqlContext = new MSSQLContext())
             using (var oracleContext = new OracleContext())
             {
+                Console.WriteLine(mssqlContext.Expenses.Count());
                 //replicating measures
                 foreach (var measure in oracleContext.MEASURES)
                 {
@@ -136,13 +137,15 @@ namespace Supermarket.ConsoleApp.Commands
                                 {
                                     string productName = (string) row.AllocatedCells[1].Value;
                                     int quantity = row.AllocatedCells[2].IntValue;
+                                    decimal unitPrice = Decimal.Parse(row.AllocatedCells[3].DoubleValue.ToString());
 
                                     mssqlContext.SupermarketProducts.AddOrUpdate(new SupermarketProduct()
                                     {
                                         ProductId = mssqlContext.Products.First(p => p.ProductName == productName).Id,
                                         SupermarketId = mssqlContext.Supermarkets.First(s => s.Name == supermarketName).Id,
                                         Quantity = quantity,
-                                        SaleDate = theDate
+                                        SaleDate = theDate,
+                                        UnitPrice = unitPrice
                                     });
 
                                     mssqlContext.SaveChanges();
