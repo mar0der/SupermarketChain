@@ -84,9 +84,11 @@ namespace Supermarket.ConsoleApp.Commands
             this.Engine.Output.AppendLine(Messages.Oracle2MssqlSuccess); 
         }
 
-        private void InsertDataFromExcelFile(string filepath)
+        private void InsertDataFromExcelFile(string filePath)
         {
-            using (Ionic.Zip.ZipFile zipFile = Ionic.Zip.ZipFile.Read("F:\\testzip.zip"))
+            var defaultZipFileName = "Sample-Sales-Reports.zip";
+
+            using (Ionic.Zip.ZipFile zipFile = Ionic.Zip.ZipFile.Read((filePath == null ? defaultZipFileName : filePath)))
             using (var mssqlContext = new MSSQLContext())
             {
                 SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
@@ -158,7 +160,7 @@ namespace Supermarket.ConsoleApp.Commands
         public override void Execute()
         {
             this.CopyOracleDataToSqlServer();
-            this.InsertDataFromExcelFile("temp");
+            this.InsertDataFromExcelFile((this.Data.Count > 1 ? this.Data.Last() : null));
         }
     }
 }
