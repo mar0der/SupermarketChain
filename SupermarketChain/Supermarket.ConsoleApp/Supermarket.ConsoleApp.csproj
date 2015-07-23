@@ -88,6 +88,7 @@
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Commands\Problem3Command.cs" />
+    <Compile Include="Commands\Problem4Command.cs" />
     <Compile Include="Factories\CommandFactory.cs" />
     <Compile Include="Commands\Problem2Command.cs" />
     <Compile Include="Constants\Messages.cs" />
