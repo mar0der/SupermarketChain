@@ -47,9 +47,10 @@
             {
                 this.Output.AppendLine(ex.Message);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException exception)
             {
                 this.Output.AppendLine(Messages.InvalidCommand);
+                this.Output.AppendLine(exception.Message);
             }
 
             Console.Write(this.Output);

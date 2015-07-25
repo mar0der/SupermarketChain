@@ -9,8 +9,6 @@
 
     using MSSQLDB;
 
-    using MSSQLModels.Models;
-
     using Supermarket.ConsoleApp.Constants;
     using Supermarket.ConsoleApp.Interfaces;
 

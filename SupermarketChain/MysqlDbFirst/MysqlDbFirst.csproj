@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0CECA10-705D-4EDA-BF17-6305F3C47E90}</ProjectGuid>
+    <ProjectGuid>{5402B0F2-571F-4515-8F73-4B6ACEDD34A9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SupermarketChainMain</RootNamespace>
-    <AssemblyName>SupermarketChainMain</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>MysqlDbFirst</RootNamespace>
+    <AssemblyName>MysqlDbFirst</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,18 +37,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>..\packages\odp.net.managed.121.1.2\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -57,36 +53,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreLogic\Engine.cs" />
-    <Compile Include="SupermarketChainMain.cs" />
+    <Compile Include="expens.cs">
+      <DependentUpon>MysqlCodeFirstContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MysqlCodeFirstContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MysqlCodeFirstContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MysqlCodeFirstContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MysqlCodeFirstContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MysqlCodeFirstContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MysqlCodeFirstContext.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="vendor.cs">
+      <DependentUpon>MysqlCodeFirstContext.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="MysqlCodeFirstContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MysqlCodeFirstContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MysqlCodeFirstContext.edmx.diagram">
+      <DependentUpon>MysqlCodeFirstContext.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resourses\CreateOracleTables.sql" />
+    <Content Include="MysqlCodeFirstContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MysqlCodeFirstContext.edmx</DependentUpon>
+      <LastGenOutput>MysqlCodeFirstContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="MysqlCodeFirstContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MysqlCodeFirstContext.edmx</DependentUpon>
+      <LastGenOutput>MysqlCodeFirstContext.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\oracledb\SuperMarketChain.OracleModel.csproj">
-      <Project>{ce7989e8-72a5-4526-a82e-c2d75d9da3ac}</Project>
-      <Name>SuperMarketChain.OracleModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SupermarketChain.MSSQLData\MSSQLData.csproj">
-      <Project>{8d8b1026-0700-4472-93ea-4f994c592316}</Project>
-      <Name>MSSQLData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SupermarketChain.MSSQLModels\MSSQLModels.csproj">
-      <Project>{8b8a0a38-3376-4188-80af-ffb230e6fe8c}</Project>
-      <Name>MSSQLModels</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

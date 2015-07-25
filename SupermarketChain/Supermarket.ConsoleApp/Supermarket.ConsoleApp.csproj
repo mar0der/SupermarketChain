@@ -75,6 +75,14 @@
     <Reference Include="MongoDB.Driver.Core">
       <HintPath>..\packages\MongoDB.Driver.Core.2.0.1\lib\net45\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.9.7\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.Entity.6.9.7\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -97,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AbstractCommand.cs" />
+    <Compile Include="Commands\Problem7Command.cs" />
     <Compile Include="Commands\Exeptions\CommandExeption.cs" />
     <Compile Include="Commands\ExitCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
@@ -121,6 +130,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MysqlDbFirst\MysqlDbFirst.csproj">
+      <Project>{5402b0f2-571f-4515-8f73-4b6acedd34a9}</Project>
+      <Name>MysqlDbFirst</Name>
+    </ProjectReference>
     <ProjectReference Include="..\oracledb\SuperMarketChain.OracleData.csproj">
       <Project>{ce7989e8-72a5-4526-a82e-c2d75d9da3ac}</Project>
       <Name>SuperMarketChain.OracleData</Name>

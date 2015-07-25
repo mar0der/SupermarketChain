@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SupermarketChain.MySQL")]
+[assembly: AssemblyTitle("MysqlDbFirst")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SupermarketChain.MySQL")]
+[assembly: AssemblyProduct("MysqlDbFirst")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1c15be3f-3da9-4594-aee6-d44c80f4b28a")]
+[assembly: Guid("b3d7b9ef-b322-4b1e-80b9-ffbde30bec48")]
 
 // Version information for an assembly consists of the following four values:
 //
