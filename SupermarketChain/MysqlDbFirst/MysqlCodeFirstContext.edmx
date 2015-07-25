@@ -11,7 +11,17 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="date_time" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="vendor_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="products">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="product_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="vendors">
           <Key>
@@ -19,6 +29,22 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="vendor_name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.supermarket_chain.vendors_products' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vendors_products">
+          <Key>
+            <PropertyRef Name="vendor_id" />
+            <PropertyRef Name="product_id" />
+            <PropertyRef Name="quantity" />
+            <PropertyRef Name="sale_date" />
+            <PropertyRef Name="unit_price" />
+          </Key>
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="sale_date" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="unit_price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
         </EntityType>
         <Association Name="expenses_ibfk_1">
           <End Role="vendors" Type="Self.vendors" Multiplicity="1">
@@ -34,12 +60,76 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="products_ibfk_1">
+          <End Role="vendors" Type="Self.vendors" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="products" Type="Self.products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vendors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="products">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vendors_products_ibfk_1">
+          <End Role="vendors" Type="Self.vendors" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="vendors_products" Type="Self.vendors_products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vendors">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vendors_products">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vendors_products_ibfk_2">
+          <End Role="products" Type="Self.products" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="vendors_products" Type="Self.vendors_products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vendors_products">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="supermarket_chainModelStoreContainer">
           <EntitySet Name="expenses" EntityType="Self.expenses" Schema="supermarket_chain" store:Type="Tables" />
+          <EntitySet Name="products" EntityType="Self.products" Schema="supermarket_chain" store:Type="Tables" />
           <EntitySet Name="vendors" EntityType="Self.vendors" Schema="supermarket_chain" store:Type="Tables" />
+          <EntitySet Name="vendors_products" EntityType="Self.vendors_products" store:Type="Tables" store:Schema="supermarket_chain">
+            <DefiningQuery>SELECT
+`vendors_products`.`vendor_id`, 
+`vendors_products`.`product_id`, 
+`vendors_products`.`quantity`, 
+`vendors_products`.`sale_date`, 
+`vendors_products`.`unit_price`
+FROM `vendors_products` AS `vendors_products`</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="expenses_ibfk_1" Association="Self.expenses_ibfk_1">
             <End Role="vendors" EntitySet="vendors" />
             <End Role="expenses" EntitySet="expenses" />
+          </AssociationSet>
+          <AssociationSet Name="products_ibfk_1" Association="Self.products_ibfk_1">
+            <End Role="vendors" EntitySet="vendors" />
+            <End Role="products" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="vendors_products_ibfk_1" Association="Self.vendors_products_ibfk_1">
+            <End Role="vendors" EntitySet="vendors" />
+            <End Role="vendors_products" EntitySet="vendors_products" />
+          </AssociationSet>
+          <AssociationSet Name="vendors_products_ibfk_2" Association="Self.vendors_products_ibfk_2">
+            <End Role="products" EntitySet="products" />
+            <End Role="vendors_products" EntitySet="vendors_products" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -54,6 +144,7 @@
           <Property Name="amount" Type="Decimal" Nullable="false" />
           <Property Name="vendor_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="vendor" Relationship="supermarket_chainModel.expenses_ibfk_1" FromRole="expens" ToRole="vendor" />
+          <Property Name="date_time" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityContainer Name="supermarket_chainEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="expenses" EntityType="Self.expens" />
@@ -61,6 +152,20 @@
           <AssociationSet Name="expenses_ibfk_1" Association="supermarket_chainModel.expenses_ibfk_1">
             <End Role="vendor" EntitySet="vendors" />
             <End Role="expens" EntitySet="expenses" />
+          </AssociationSet>
+          <EntitySet Name="products" EntityType="supermarket_chainModel.product" />
+          <EntitySet Name="vendors_products" EntityType="supermarket_chainModel.vendors_products" />
+          <AssociationSet Name="products_ibfk_1" Association="supermarket_chainModel.products_ibfk_1">
+            <End Role="vendor" EntitySet="vendors" />
+            <End Role="product" EntitySet="products" />
+          </AssociationSet>
+          <AssociationSet Name="vendors_products_ibfk_2" Association="supermarket_chainModel.vendors_products_ibfk_2">
+            <End Role="product" EntitySet="products" />
+            <End Role="vendors_products" EntitySet="vendors_products" />
+          </AssociationSet>
+          <AssociationSet Name="vendors_products_ibfk_1" Association="supermarket_chainModel.vendors_products_ibfk_1">
+            <End Role="vendor" EntitySet="vendors" />
+            <End Role="vendors_products" EntitySet="vendors_products" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="vendor">
@@ -70,6 +175,8 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="vendor_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="expenses" Relationship="supermarket_chainModel.expenses_ibfk_1" FromRole="vendor" ToRole="expens" />
+          <NavigationProperty Name="products" Relationship="supermarket_chainModel.products_ibfk_1" FromRole="vendor" ToRole="product" />
+          <NavigationProperty Name="vendors_products" Relationship="supermarket_chainModel.vendors_products_ibfk_1" FromRole="vendor" ToRole="vendors_products" />
         </EntityType>
         <Association Name="expenses_ibfk_1">
           <End Type="supermarket_chainModel.vendor" Role="vendor" Multiplicity="1">
@@ -85,6 +192,75 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="product_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="vendor" Relationship="supermarket_chainModel.products_ibfk_1" FromRole="product" ToRole="vendor" />
+          <NavigationProperty Name="vendors_products" Relationship="supermarket_chainModel.vendors_products_ibfk_2" FromRole="product" ToRole="vendors_products" />
+        </EntityType>
+        <EntityType Name="vendors_products">
+          <Key>
+            <PropertyRef Name="vendor_id" />
+            <PropertyRef Name="product_id" />
+            <PropertyRef Name="quantity" />
+            <PropertyRef Name="sale_date" />
+            <PropertyRef Name="unit_price" />
+          </Key>
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="sale_date" Type="DateTime" Nullable="false" />
+          <Property Name="unit_price" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="product" Relationship="supermarket_chainModel.vendors_products_ibfk_2" FromRole="vendors_products" ToRole="product" />
+          <NavigationProperty Name="vendor" Relationship="supermarket_chainModel.vendors_products_ibfk_1" FromRole="vendors_products" ToRole="vendor" />
+        </EntityType>
+        <Association Name="products_ibfk_1">
+          <End Type="supermarket_chainModel.vendor" Role="vendor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="supermarket_chainModel.product" Role="product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="product">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vendors_products_ibfk_2">
+          <End Type="supermarket_chainModel.product" Role="product" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="supermarket_chainModel.vendors_products" Role="vendors_products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="product">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vendors_products">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="vendors_products_ibfk_1">
+          <End Type="supermarket_chainModel.vendor" Role="vendor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="supermarket_chainModel.vendors_products" Role="vendors_products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="vendors_products">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -94,6 +270,7 @@
           <EntitySetMapping Name="expenses">
             <EntityTypeMapping TypeName="supermarket_chainModel.expens">
               <MappingFragment StoreEntitySet="expenses">
+                <ScalarProperty Name="date_time" ColumnName="date_time" />
                 <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
@@ -105,6 +282,27 @@
               <MappingFragment StoreEntitySet="vendors">
                 <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="products">
+            <EntityTypeMapping TypeName="supermarket_chainModel.product">
+              <MappingFragment StoreEntitySet="products">
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vendors_products">
+            <EntityTypeMapping TypeName="supermarket_chainModel.vendors_products">
+              <MappingFragment StoreEntitySet="vendors_products">
+                <ScalarProperty Name="unit_price" ColumnName="unit_price" />
+                <ScalarProperty Name="sale_date" ColumnName="sale_date" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

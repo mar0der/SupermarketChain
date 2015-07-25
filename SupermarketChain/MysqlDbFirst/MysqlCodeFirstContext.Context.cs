@@ -27,5 +27,7 @@ namespace MysqlDbFirst
     
         public DbSet<expens> expenses { get; set; }
         public DbSet<vendor> vendors { get; set; }
+        public DbSet<product> products { get; set; }
+        public DbSet<vendors_products> vendors_products { get; set; }
     }
 }

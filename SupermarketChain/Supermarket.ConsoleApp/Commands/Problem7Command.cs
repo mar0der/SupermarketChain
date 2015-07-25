@@ -18,6 +18,7 @@
 
         public override void Execute()
         {
+            //his should transfer the data holding the vendors, their products, their incomes by product and their expenses. Th
             Console.WriteLine("boo");
             using (var db = new supermarket_chainEntities())
             {

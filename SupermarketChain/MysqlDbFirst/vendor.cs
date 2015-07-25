@@ -17,11 +17,15 @@ namespace MysqlDbFirst
         public vendor()
         {
             this.expenses = new HashSet<expens>();
+            this.products = new HashSet<product>();
+            this.vendors_products = new HashSet<vendors_products>();
         }
     
         public int id { get; set; }
         public string vendor_name { get; set; }
     
         public virtual ICollection<expens> expenses { get; set; }
+        public virtual ICollection<product> products { get; set; }
+        public virtual ICollection<vendors_products> vendors_products { get; set; }
     }
 }

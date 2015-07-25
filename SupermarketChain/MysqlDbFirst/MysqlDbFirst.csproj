@@ -71,8 +71,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MysqlCodeFirstContext.edmx</DependentUpon>
     </Compile>
+    <Compile Include="product.cs">
+      <DependentUpon>MysqlCodeFirstContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="vendor.cs">
+      <DependentUpon>MysqlCodeFirstContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vendors_products.cs">
       <DependentUpon>MysqlCodeFirstContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>

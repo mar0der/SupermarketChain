@@ -12,14 +12,15 @@ namespace MysqlDbFirst
     using System;
     using System.Collections.Generic;
     
-    public partial class expens
+    public partial class vendors_products
     {
-        public int id { get; set; }
-
-        public decimal amount { get; set; }
         public int vendor_id { get; set; }
-        public System.DateTime date_time { get; set; }
+        public int product_id { get; set; }
+        public int quantity { get; set; }
+        public System.DateTime sale_date { get; set; }
+        public decimal unit_price { get; set; }
     
+        public virtual product product { get; set; }
         public virtual vendor vendor { get; set; }
     }
 }
