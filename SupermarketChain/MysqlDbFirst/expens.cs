@@ -15,7 +15,6 @@ namespace MysqlDbFirst
     public partial class expens
     {
         public int id { get; set; }
-
         public decimal amount { get; set; }
         public int vendor_id { get; set; }
         public System.DateTime date_time { get; set; }

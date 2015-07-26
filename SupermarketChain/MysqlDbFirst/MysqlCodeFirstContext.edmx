@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="date_time" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="vendor_id" Type="int" Nullable="false" />
@@ -18,7 +18,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="vendor_id" Type="int" Nullable="false" />
           <Property Name="product_name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
@@ -27,11 +27,9 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="vendor_name" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'def.supermarket_chain.vendors_products' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vendors_products">
           <Key>
             <PropertyRef Name="vendor_id" />
@@ -106,15 +104,7 @@ warning 6002: The table/view 'def.supermarket_chain.vendors_products' does not h
           <EntitySet Name="expenses" EntityType="Self.expenses" Schema="supermarket_chain" store:Type="Tables" />
           <EntitySet Name="products" EntityType="Self.products" Schema="supermarket_chain" store:Type="Tables" />
           <EntitySet Name="vendors" EntityType="Self.vendors" Schema="supermarket_chain" store:Type="Tables" />
-          <EntitySet Name="vendors_products" EntityType="Self.vendors_products" store:Type="Tables" store:Schema="supermarket_chain">
-            <DefiningQuery>SELECT
-`vendors_products`.`vendor_id`, 
-`vendors_products`.`product_id`, 
-`vendors_products`.`quantity`, 
-`vendors_products`.`sale_date`, 
-`vendors_products`.`unit_price`
-FROM `vendors_products` AS `vendors_products`</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="vendors_products" EntityType="Self.vendors_products" Schema="supermarket_chain" store:Type="Tables" />
           <AssociationSet Name="expenses_ibfk_1" Association="Self.expenses_ibfk_1">
             <End Role="vendors" EntitySet="vendors" />
             <End Role="expenses" EntitySet="expenses" />
@@ -140,7 +130,7 @@ FROM `vendors_products` AS `vendors_products`</DefiningQuery>
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="amount" Type="Decimal" Nullable="false" />
           <Property Name="vendor_id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="vendor" Relationship="supermarket_chainModel.expenses_ibfk_1" FromRole="expens" ToRole="vendor" />
@@ -172,7 +162,7 @@ FROM `vendors_products` AS `vendors_products`</DefiningQuery>
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="vendor_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="expenses" Relationship="supermarket_chainModel.expenses_ibfk_1" FromRole="vendor" ToRole="expens" />
           <NavigationProperty Name="products" Relationship="supermarket_chainModel.products_ibfk_1" FromRole="vendor" ToRole="product" />
@@ -196,7 +186,7 @@ FROM `vendors_products` AS `vendors_products`</DefiningQuery>
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="vendor_id" Type="Int32" Nullable="false" />
           <Property Name="product_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="price" Type="Decimal" Nullable="false" />

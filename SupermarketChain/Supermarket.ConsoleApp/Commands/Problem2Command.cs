@@ -1,15 +1,15 @@
-﻿using System;
-using System.Data.Entity.Migrations;
-using System.IO;
-using GemBox.Spreadsheet;
-using Ionic.Zip;
-using SupermarketChain.MSSQL;
-
-namespace Supermarket.ConsoleApp.Commands
+﻿namespace Supermarket.ConsoleApp.Commands
 {
     #region
 
+    using System;
+    using System.Data.Entity.Migrations;
+    using System.IO;
     using System.Linq;
+
+    using GemBox.Spreadsheet;
+
+    using Ionic.Zip;
 
     using MSSQLDB;
 
@@ -19,6 +19,9 @@ namespace Supermarket.ConsoleApp.Commands
 
     using Supermarket.ConsoleApp.Constants;
     using Supermarket.ConsoleApp.Interfaces;
+
+    using SupermarketChain.MSSQL;
+    using SupermarketChain.MSSQL.Models;
 
     #endregion
 
@@ -34,13 +37,13 @@ namespace Supermarket.ConsoleApp.Commands
             using (var mssqlContext = new MSSQLContext())
             using (var oracleContext = new OracleContext())
             {
-                Console.WriteLine(mssqlContext.Expenses.Count());
-                //replicating measures
+                this.Engine.Output.AppendLine(Messages.Delimiter);
+
+                // replicating measures
                 foreach (var measure in oracleContext.MEASURES)
                 {
                     if (!mssqlContext.Measures.Any(m => m.Name == measure.MEASURE_NAME))
                     {
-  
                         mssqlContext.Measures.Add(new Measure { Name = measure.MEASURE_NAME });
 
                         mssqlContext.SaveChanges();
@@ -49,7 +52,7 @@ namespace Supermarket.ConsoleApp.Commands
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlMeasures);
 
-                //replicationg vendors
+                // replicationg vendors
                 foreach (var vendor in oracleContext.VENDORS)
                 {
                     if (!mssqlContext.Vendors.Any(v => v.VendorName == vendor.VENDOR_NAME))
@@ -62,19 +65,19 @@ namespace Supermarket.ConsoleApp.Commands
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlVendors);
 
-                //replicationg products
+                // replicationg products
                 foreach (var product in oracleContext.PRODUCTS)
                 {
                     if (!mssqlContext.Products.Any(p => p.ProductName == product.PRODUCT_NAME))
                     {
                         mssqlContext.Products.Add(
                             new Product
-                            {
-                                ProductName = product.PRODUCT_NAME,
-                                Price = product.PRICE,
-                                MeasureId = product.MEASURE_ID,
-                                VendorId = product.VENDOR_ID
-                            });
+                                {
+                                    ProductName = product.PRODUCT_NAME, 
+                                    Price = product.PRICE, 
+                                    MeasureId = product.MEASURE_ID, 
+                                    VendorId = product.VENDOR_ID
+                                });
 
                         mssqlContext.SaveChanges();
                     }
@@ -82,22 +85,23 @@ namespace Supermarket.ConsoleApp.Commands
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlProducts);
             }
-            this.Engine.Output.AppendLine(Messages.Oracle2MssqlSuccess); 
+
+            this.Engine.Output.AppendLine(Messages.Oracle2MssqlSuccess);
         }
 
         private void InsertDataFromExcelFile(string filePath)
         {
             var defaultZipFileName = "Sample-Sales-Reports.zip";
 
-            using (Ionic.Zip.ZipFile zipFile = Ionic.Zip.ZipFile.Read((filePath == null ? defaultZipFileName : filePath)))
+            using (var zipFile = ZipFile.Read(filePath == null ? defaultZipFileName : filePath))
             using (var mssqlContext = new MSSQLContext())
             {
                 SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
-                DateTime theDate = DateTime.Now;
-                bool changed = false;
+                var theDate = DateTime.Now;
+                var changed = false;
 
-                foreach (ZipEntry zip in zipFile)
+                foreach (var zip in zipFile)
                 {
                     changed = false;
 
@@ -110,47 +114,49 @@ namespace Supermarket.ConsoleApp.Commands
                     {
                         zip.Extract();
 
-                        ExcelFile excelFile = ExcelFile.Load(zip.FileName);
+                        var excelFile = ExcelFile.Load(zip.FileName);
 
-                        string supermarketName = string.Empty;
+                        var supermarketName = string.Empty;
 
-                        foreach (ExcelWorksheet sheet in excelFile.Worksheets)
+                        foreach (var sheet in excelFile.Worksheets)
                         {
                             supermarketName = (string)sheet.Rows[1].AllocatedCells[1].Value;
                             supermarketName = supermarketName.Substring(13, supermarketName.Length - 14);
 
                             if (!mssqlContext.Supermarkets.Any(s => s.Name == supermarketName))
                             {
-                                mssqlContext.Supermarkets.AddOrUpdate(new SupermarketChain.MSSQL.Models.Supermarket()
-                                {
-                                    Name = supermarketName
-                                });
+                                mssqlContext.Supermarkets.AddOrUpdate(new Supermarket { Name = supermarketName });
 
                                 mssqlContext.SaveChanges();
                             }
 
-                            int currentRowsLength = sheet.Rows.Count;
+                            var currentRowsLength = sheet.Rows.Count;
 
-                            foreach (ExcelRow row in sheet.Rows)
+                            foreach (var row in sheet.Rows)
                             {
                                 if (row.Index > 2 && row.Index < currentRowsLength - 1)
                                 {
-                                    string productName = (string) row.AllocatedCells[1].Value;
-                                    int quantity = row.AllocatedCells[2].IntValue;
-                                    decimal unitPrice = Decimal.Parse(row.AllocatedCells[3].DoubleValue.ToString());
+                                    var productName = (string)row.AllocatedCells[1].Value;
+                                    var quantity = row.AllocatedCells[2].IntValue;
+                                    var unitPrice = decimal.Parse(row.AllocatedCells[3].DoubleValue.ToString());
 
-                                    mssqlContext.SupermarketProducts.AddOrUpdate(new SupermarketProduct()
-                                    {
-                                        ProductId = mssqlContext.Products.First(p => p.ProductName == productName).Id,
-                                        SupermarketId = mssqlContext.Supermarkets.First(s => s.Name == supermarketName).Id,
-                                        Quantity = quantity,
-                                        SaleDate = theDate,
-                                        UnitPrice = unitPrice
-                                    });
+                                    mssqlContext.SupermarketProducts.AddOrUpdate(
+                                        new SupermarketProduct
+                                            {
+                                                ProductId =
+                                                    mssqlContext.Products.First(
+                                                        p => p.ProductName == productName).Id, 
+                                                SupermarketId =
+                                                    mssqlContext.Supermarkets.First(
+                                                        s => s.Name == supermarketName).Id, 
+                                                Quantity = quantity, 
+                                                SaleDate = theDate, 
+                                                UnitPrice = unitPrice
+                                            });
 
                                     mssqlContext.SaveChanges();
                                 }
-                            }    
+                            }
                         }
 
                         File.Delete(zip.FileName);
@@ -163,7 +169,7 @@ namespace Supermarket.ConsoleApp.Commands
         public override void Execute()
         {
             this.CopyOracleDataToSqlServer();
-            this.InsertDataFromExcelFile((this.Data.Count > 1 ? this.Data.Last() : null));
+            this.InsertDataFromExcelFile(this.Data.Count > 1 ? this.Data.Last() : null);
         }
     }
 }
