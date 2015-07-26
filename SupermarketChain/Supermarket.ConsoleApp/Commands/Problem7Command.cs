@@ -2,10 +2,15 @@
 {
     #region
 
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
     using MSSQLDB;
+
+    using MSSQLModels.Models;
 
     using MysqlDbFirst;
 
@@ -27,14 +32,23 @@
             using (var msdb = new MSSQLContext())
             using (var mydb = new supermarket_chainEntities())
             {
-                var allNewVendors = msdb.Vendors.Select(v => new { v.Id, v.VendorName }).ToList();
-                var allNewProducts =
-                    msdb.Products.Select(p => new { p.Id, p.ProductName, p.VendorId, p.Price }).ToList();
-                var allNewExpenses = msdb.Expenses.Select(e => new { e.Id, e.Amount, e.DateTime, e.VendorId }).ToList();
-                var allNewVendorProducts =
-                    msdb.SupermarketProducts.Select(
-                        sp => new { sp.ProductId, sp.Product.VendorId, sp.Quantity, sp.SaleDate, sp.UnitPrice })
+                var allNewVendors =
+                    msdb.Vendors.Where(v => v.IsExportedToMysql == false)
+                        .Select(v => new { v.Id, v.VendorName, v.IsExportedToMysql })
                         .ToList();
+                var allNewProducts =
+                    msdb.Products.Where(v => v.IsExportedToMysql == false)
+                        .Select(p => new { p.Id, p.ProductName, p.VendorId, p.Price })
+                        .ToList();
+                var allNewExpenses =
+                    msdb.Expenses.Where(v => v.IsExportedToMysql == false)
+                        .Select(e => new { e.Id, e.Amount, e.DateTime, e.VendorId })
+                        .ToList();
+                var allNewVendorProducts =
+                    msdb.SupermarketProducts.Where(v => v.IsExportedToMysql == false)
+                        .Select(sp => new { sp.ProductId, sp.Product.VendorId, sp.Quantity, sp.SaleDate, sp.UnitPrice })
+                        .ToList();
+
                 this.Engine.Output.AppendLine(Messages.Delimiter);
                 this.Engine.Output.AppendLine(Messages.MysqlNewDataPulled);
 
@@ -88,6 +102,12 @@
                         vp => new { vp.vendor_id, vp.product_id, vp.sale_date, vp.quantity, vp.unit_price }, 
                         mysqlVendorProduct);
                 }
+
+                //cuz i can`t do it smarter than that 
+                msdb.Database.ExecuteSqlCommand("UPDATE Vendors SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
+                msdb.Database.ExecuteSqlCommand("UPDATE Products SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
+                msdb.Database.ExecuteSqlCommand("UPDATE Expenses SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
+                msdb.Database.ExecuteSqlCommand("UPDATE SupermarketProducts SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
 
                 mydb.SaveChanges();
 

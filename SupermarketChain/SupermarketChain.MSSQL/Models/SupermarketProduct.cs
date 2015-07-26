@@ -3,6 +3,7 @@
     #region
 
     using System;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,5 +33,8 @@
         public int Quantity { get; set; }
 
         public decimal UnitPrice { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsExportedToMysql { get; set; }
     }
 }
