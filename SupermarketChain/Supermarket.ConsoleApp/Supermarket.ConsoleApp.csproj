@@ -113,6 +113,7 @@
     <Compile Include="Commands\Problem4Command.cs" />
     <Compile Include="Commands\Problem5Command.cs" />
     <Compile Include="Commands\Problem6Command.cs" />
+    <Compile Include="Commands\Problem8Command.cs" />
     <Compile Include="Factories\CommandFactory.cs" />
     <Compile Include="Commands\Problem2Command.cs" />
     <Compile Include="Constants\Messages.cs" />
@@ -120,6 +121,8 @@
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IEngine.cs" />
     <Compile Include="Interfaces\IExecutable.cs" />
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
     <Compile Include="SupermarketChainMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -141,6 +144,10 @@
     <ProjectReference Include="..\SupermarketChain.MSSQL\SupermarketChain.MSSQL.csproj">
       <Project>{c54e6c66-232c-405b-b8ec-0920c5a0c662}</Project>
       <Name>SupermarketChain.MSSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SupermarketChain.SQLite\SupermarketChain.SQLite.csproj">
+      <Project>{5cfe4c7b-db58-4f17-8b5b-d2f97359f7f3}</Project>
+      <Name>SupermarketChain.SQLite</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

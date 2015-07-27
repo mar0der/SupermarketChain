@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SupermarketChain.SQLLiteData")]
+[assembly: AssemblyTitle("SupermarketChain.SQLite")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SupermarketChain.SQLLiteData")]
+[assembly: AssemblyProduct("SupermarketChain.SQLite")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("834d5b71-5eab-491f-94d3-1d22507221be")]
+[assembly: Guid("9f933600-6d5b-41dd-ab8d-6f98802f2fe4")]
 
 // Version information for an assembly consists of the following four values:
 //
