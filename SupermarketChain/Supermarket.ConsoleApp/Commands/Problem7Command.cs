@@ -70,7 +70,7 @@
 
                 this.Engine.Output.AppendLine(Messages.MysqlNewVExpensesAdded);
 
-                foreach (var vendorProduct in mssqlContext.SupermarketProducts.Include("Vendor"))
+                foreach (var vendorProduct in mssqlContext.SupermarketProducts.Include("Product"))
                 {
                     var mysqlVendorProduct = new vendors_products
                                                  {
