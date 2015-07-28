@@ -42,12 +42,9 @@
                 // replicating measures
                 foreach (var measure in oracleContext.MEASURES)
                 {
-                    if (!mssqlContext.Measures.Any(m => m.Name == measure.MEASURE_NAME))
-                    {
-                        mssqlContext.Measures.Add(new Measure { Name = measure.MEASURE_NAME });
+                    mssqlContext.Measures.AddOrUpdate(m => m.Name, new Measure { Name = measure.MEASURE_NAME });
 
-                        mssqlContext.SaveChanges();
-                    }
+                    mssqlContext.SaveChanges();
                 }
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlMeasures);
@@ -55,12 +52,9 @@
                 // replicationg vendors
                 foreach (var vendor in oracleContext.VENDORS)
                 {
-                    if (!mssqlContext.Vendors.Any(v => v.VendorName == vendor.VENDOR_NAME))
-                    {
-                        mssqlContext.Vendors.Add(new Vendor { VendorName = vendor.VENDOR_NAME });
+                    mssqlContext.Vendors.AddOrUpdate(v => v.VendorName, new Vendor { VendorName = vendor.VENDOR_NAME });
 
-                        mssqlContext.SaveChanges();
-                    }
+                    mssqlContext.SaveChanges();                   
                 }
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlVendors);
@@ -68,19 +62,16 @@
                 // replicationg products
                 foreach (var product in oracleContext.PRODUCTS)
                 {
-                    if (!mssqlContext.Products.Any(p => p.ProductName == product.PRODUCT_NAME))
-                    {
-                        mssqlContext.Products.Add(
-                            new Product
-                                {
-                                    ProductName = product.PRODUCT_NAME, 
-                                    Price = product.PRICE, 
-                                    MeasureId = product.MEASURE_ID, 
-                                    VendorId = product.VENDOR_ID
-                                });
+                    mssqlContext.Products.AddOrUpdate(p => p.ProductName,
+                        new Product
+                            {
+                                ProductName = product.PRODUCT_NAME, 
+                                Price = product.PRICE, 
+                                MeasureId = product.MEASURE_ID, 
+                                VendorId = product.VENDOR_ID
+                            });
 
-                        mssqlContext.SaveChanges();
-                    }
+                    mssqlContext.SaveChanges();
                 }
 
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlProducts);
@@ -91,7 +82,7 @@
 
         private void InsertDataFromExcelFile(string filePath)
         {
-            var defaultZipFileName = "Sample-Sales-Reports.zip";
+            var defaultZipFileName = "Input\\Sample-Sales-Reports.zip";
 
             using (var zipFile = ZipFile.Read(filePath == null ? defaultZipFileName : filePath))
             using (var mssqlContext = new MSSQLContext())
@@ -123,12 +114,9 @@
                             supermarketName = (string)sheet.Rows[1].AllocatedCells[1].Value;
                             supermarketName = supermarketName.Substring(13, supermarketName.Length - 14);
 
-                            if (!mssqlContext.Supermarkets.Any(s => s.Name == supermarketName))
-                            {
-                                mssqlContext.Supermarkets.AddOrUpdate(new Supermarket { Name = supermarketName });
+                            mssqlContext.Supermarkets.AddOrUpdate(s => s.Name, new Supermarket { Name = supermarketName });
 
-                                mssqlContext.SaveChanges();
-                            }
+                            mssqlContext.SaveChanges();
 
                             var currentRowsLength = sheet.Rows.Count;
 

@@ -20,7 +20,7 @@ namespace Supermarket.ConsoleApp.Commands
 
         public override void Execute()
         {
-            using (FileStream fileStream = new FileStream("testpdf.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (FileStream fileStream = new FileStream("Output\\testpdf.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
             using (Document pdfDocument = new Document())
             using (var mssqlContext = new MSSQLContext())
             {

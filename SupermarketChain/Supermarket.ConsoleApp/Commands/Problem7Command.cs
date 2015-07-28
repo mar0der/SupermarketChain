@@ -29,87 +29,63 @@
         public override void Execute()
         {
             // his should transfer the data holding the vendors, their products, their incomes by product and their expenses. Th
-            using (var msdb = new MSSQLContext())
-            using (var mydb = new supermarket_chainEntities())
+            using (var mssqlContext = new MSSQLContext())
+            using (var mysqlContext = new supermarket_chainEntities())
             {
-                var allNewVendors =
-                    msdb.Vendors.Where(v => v.IsExportedToMysql == false)
-                        .Select(v => new { v.Id, v.VendorName, v.IsExportedToMysql })
-                        .ToList();
-                var allNewProducts =
-                    msdb.Products.Where(v => v.IsExportedToMysql == false)
-                        .Select(p => new { p.Id, p.ProductName, p.VendorId, p.Price })
-                        .ToList();
-                var allNewExpenses =
-                    msdb.Expenses.Where(v => v.IsExportedToMysql == false)
-                        .Select(e => new { e.Id, e.Amount, e.DateTime, e.VendorId })
-                        .ToList();
-                var allNewVendorProducts =
-                    msdb.SupermarketProducts.Where(v => v.IsExportedToMysql == false)
-                        .Select(sp => new { sp.ProductId, sp.Product.VendorId, sp.Quantity, sp.SaleDate, sp.UnitPrice })
-                        .ToList();
-
-                this.Engine.Output.AppendLine(Messages.Delimiter);
-                this.Engine.Output.AppendLine(Messages.MysqlNewDataPulled);
-
-                foreach (var newVendor in allNewVendors)
+                foreach (var vendor in mssqlContext.Vendors)
                 {
-                    var mysqlVendor = new vendor { id = newVendor.Id, vendor_name = newVendor.VendorName };
-                    mydb.vendors.AddOrUpdate(v => v.id, mysqlVendor);
+                    var mysqlVendor = new vendor { id = vendor.Id, vendor_name = vendor.VendorName };
+
+                    mysqlContext.vendors.AddOrUpdate(v => v.id, mysqlVendor);
                 }
 
-                this.Engine.Output.AppendLine(Messages.MysqlNewVProductsAdded);
+                this.Engine.Output.AppendLine(Messages.MysqlNewVendorsAdded);
 
-                foreach (var newProduct in allNewProducts)
+                foreach (var product in mssqlContext.Products)
                 {
-                    var musqlProduct = new product
+                    var mysqlProduct = new product
                                            {
-                                               id = newProduct.Id, 
-                                               vendor_id = newProduct.VendorId, 
-                                               product_name = newProduct.ProductName, 
-                                               price = newProduct.Price
+                                               id = product.Id,
+                                               vendor_id = product.VendorId,
+                                               product_name = product.ProductName,
+                                               price = product.Price
                                            };
-                    mydb.products.AddOrUpdate(p => p.id, musqlProduct);
+
+                    mysqlContext.products.AddOrUpdate(p => p.id, mysqlProduct);
                 }
 
                 this.Engine.Output.AppendLine(Messages.MysqlNewVProductsAdded);
 
-                foreach (var newExpense in allNewExpenses)
+                foreach (var expense in mssqlContext.Expenses)
                 {
-                    var mysqExpense = new expens
+                    var mysqlExpense = new expens
                                           {
-                                              id = newExpense.Id, 
-                                              amount = newExpense.Amount, 
-                                              date_time = newExpense.DateTime, 
-                                              vendor_id = newExpense.VendorId
+                                              id = expense.Id,
+                                              amount = expense.Amount,
+                                              date_time = expense.DateTime,
+                                              vendor_id = expense.VendorId
                                           };
-                    mydb.expenses.AddOrUpdate(e => e.id, mysqExpense);
+                    mysqlContext.expenses.AddOrUpdate(e => e.id, mysqlExpense);
                 }
 
                 this.Engine.Output.AppendLine(Messages.MysqlNewVExpensesAdded);
 
-                foreach (var newVendorProduct in allNewVendorProducts)
+                foreach (var vendorProduct in mssqlContext.SupermarketProducts.Include("Vendor"))
                 {
                     var mysqlVendorProduct = new vendors_products
                                                  {
-                                                     vendor_id = newVendorProduct.VendorId, 
-                                                     product_id = newVendorProduct.ProductId, 
-                                                     quantity = newVendorProduct.Quantity, 
-                                                     sale_date = newVendorProduct.SaleDate, 
-                                                     unit_price = newVendorProduct.UnitPrice
+                                                     vendor_id = vendorProduct.Product.Vendor.Id,
+                                                     product_id = vendorProduct.ProductId,
+                                                     quantity = vendorProduct.Quantity,
+                                                     sale_date = vendorProduct.SaleDate,
+                                                     unit_price = vendorProduct.UnitPrice
                                                  };
-                    mydb.vendors_products.AddOrUpdate(
+                    mysqlContext.vendors_products.AddOrUpdate(
                         vp => new { vp.vendor_id, vp.product_id, vp.sale_date, vp.quantity, vp.unit_price }, 
                         mysqlVendorProduct);
                 }
 
-                //cuz i can`t do it smarter than that 
-                msdb.Database.ExecuteSqlCommand("UPDATE Vendors SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
-                msdb.Database.ExecuteSqlCommand("UPDATE Products SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
-                msdb.Database.ExecuteSqlCommand("UPDATE Expenses SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
-                msdb.Database.ExecuteSqlCommand("UPDATE SupermarketProducts SET IsExportedToMysql = 1 WHERE IsExportedToMysql = 0");
-
-                mydb.SaveChanges();
+                mysqlContext.SaveChanges();
 
                 this.Engine.Output.AppendLine(Messages.MysqDataTransferSuccess);
             }

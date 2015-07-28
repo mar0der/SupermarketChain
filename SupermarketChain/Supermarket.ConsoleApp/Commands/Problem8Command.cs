@@ -20,7 +20,7 @@ namespace Supermarket.ConsoleApp.Commands
             {
                 SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
-                var sqliteContext = new SQLiteConnection("SQLLiteDB");
+                var sqliteContext = new SQLiteConnection("Input\\SQLLiteDB");
 
                 var workbook = new ExcelFile();
 
@@ -33,7 +33,9 @@ namespace Supermarket.ConsoleApp.Commands
                 worksheet.Cells["D1"].Value = "Total Taxes";
                 worksheet.Cells["E1"].Value = "Financial Result";
 
-                workbook.Save("Tax_Information.xlsx");
+                worksheet.Cells["A1"].Style.FillPattern.PatternBackgroundColor = SpreadsheetColor.FromName(ColorName.Accent3Lighter80Pct);
+
+                workbook.Save("Output\\Tax_Information.xlsx");
             }
         }
     }

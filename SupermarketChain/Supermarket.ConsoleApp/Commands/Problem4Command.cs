@@ -14,7 +14,7 @@ namespace Supermarket.ConsoleApp.Commands
         public override void Execute()
         {
             using (var mssqlContext = new MSSQLContext())
-            using (XmlWriter xmlWriter = XmlWriter.Create("Sales-by-Vendors-Report.xml"))
+            using (XmlWriter xmlWriter = XmlWriter.Create("Input\\Sales-by-Vendors-Report.xml"))
             {
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement("sales");

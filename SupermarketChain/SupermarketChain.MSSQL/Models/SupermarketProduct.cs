@@ -33,8 +33,5 @@
         public int Quantity { get; set; }
 
         public decimal UnitPrice { get; set; }
-
-        [DefaultValue(false)]
-        public bool IsExportedToMysql { get; set; }
     }
 }

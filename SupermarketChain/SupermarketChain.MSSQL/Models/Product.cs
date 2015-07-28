@@ -39,9 +39,6 @@
         [Required]
         public decimal Price { get; set; }
 
-        [DefaultValue(false)]
-        public bool IsExportedToMysql { get; set; }
-
         [ForeignKey("MeasureId")]
         public virtual Measure Measure { get; set; }
 

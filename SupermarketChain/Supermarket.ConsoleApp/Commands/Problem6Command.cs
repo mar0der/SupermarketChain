@@ -1,4 +1,6 @@
-﻿namespace Supermarket.ConsoleApp.Commands
+﻿using System.Data.Entity.Migrations;
+
+namespace Supermarket.ConsoleApp.Commands
 {
     #region
 
@@ -25,15 +27,15 @@
 
         public override void Execute()
         {
-            using (var db = new MSSQLContext())
+            using (var mssqlContext = new MSSQLContext())
             {
-                var fileName = "Input/Sample-Vendor-Expenses.xml";
+                var fileName = "Input\\Sample-Vendor-Expenses.xml";
 
                 var xmlDoc = XDocument.Load(fileName);
                 foreach (var vendorNode in xmlDoc.XPathSelectElements("expenses-by-month/vendor"))
                 {
                     string vendorName = vendorNode.FirstAttribute.Value;
-                    int vendorId = db.Vendors.First(v => v.VendorName == vendorName).Id;
+                    int vendorId = mssqlContext.Vendors.First(v => v.VendorName == vendorName).Id;
 
                     foreach (var expense in vendorNode.Descendants())
                     {
@@ -44,11 +46,11 @@
                                                  DateTime = DateTime.Parse("01-" + expense.FirstAttribute.Value)
                                              };
 
-                        db.Expenses.Add(newExpense);
+                        mssqlContext.Expenses.AddOrUpdate(newExpense);
                     }
                 }
 
-                db.SaveChanges();
+                mssqlContext.SaveChanges();
                 this.Engine.Output.AppendLine(Messages.XmlImportSuccess);
             }
         }
