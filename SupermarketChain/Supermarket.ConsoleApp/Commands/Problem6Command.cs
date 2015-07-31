@@ -1,6 +1,4 @@
-﻿using System.Data.Entity.Migrations;
-
-namespace Supermarket.ConsoleApp.Commands
+﻿namespace Supermarket.ConsoleApp.Commands
 {
     #region
 
@@ -8,6 +6,7 @@ namespace Supermarket.ConsoleApp.Commands
     using System.Linq;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using System.Data.Entity.Migrations;
 
     using MSSQLDB;
 
@@ -29,9 +28,10 @@ namespace Supermarket.ConsoleApp.Commands
         {
             using (var mssqlContext = new MSSQLContext())
             {
-                var fileName = "Input\\Sample-Vendor-Expenses.xml";
+                var fileName = "../../Input/Sample-Vendor-Expenses.xml";
 
                 var xmlDoc = XDocument.Load(fileName);
+
                 foreach (var vendorNode in xmlDoc.XPathSelectElements("expenses-by-month/vendor"))
                 {
                     string vendorName = vendorNode.FirstAttribute.Value;
@@ -51,6 +51,7 @@ namespace Supermarket.ConsoleApp.Commands
                 }
 
                 mssqlContext.SaveChanges();
+
                 this.Engine.Output.AppendLine(Messages.XmlImportSuccess);
             }
         }

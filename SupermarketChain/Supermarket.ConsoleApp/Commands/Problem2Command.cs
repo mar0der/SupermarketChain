@@ -39,10 +39,19 @@
             {
                 this.Engine.Output.AppendLine(Messages.Delimiter);
 
+                var products = from product in oracleContext.PRODUCTS
+                    select new
+                    {
+                        ProductName = product.PRODUCT_NAME,
+                        Price = product.PRICE,
+                        MeasureId = product.MEASURE_ID,
+                        VendorId = product.VENDOR_ID,
+                    };
+
                 // replicating measures
-                foreach (var measure in oracleContext.MEASURES)
+                foreach (var measureName in oracleContext.MEASURES.Select(m => m.MEASURE_NAME))
                 {
-                    mssqlContext.Measures.AddOrUpdate(m => m.Name, new Measure { Name = measure.MEASURE_NAME });
+                    mssqlContext.Measures.AddOrUpdate(m => m.Name, new Measure { Name = measureName });
 
                     mssqlContext.SaveChanges();
                 }
@@ -50,9 +59,9 @@
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlMeasures);
 
                 // replicationg vendors
-                foreach (var vendor in oracleContext.VENDORS)
+                foreach (var vendorName in oracleContext.VENDORS.Select(v => v.VENDOR_NAME))
                 {
-                    mssqlContext.Vendors.AddOrUpdate(v => v.VendorName, new Vendor { VendorName = vendor.VENDOR_NAME });
+                    mssqlContext.Vendors.AddOrUpdate(v => v.VendorName, new Vendor { VendorName = vendorName });
 
                     mssqlContext.SaveChanges();                   
                 }
@@ -60,15 +69,15 @@
                 this.Engine.Output.AppendLine(Messages.Oracle2MssqlVendors);
 
                 // replicationg products
-                foreach (var product in oracleContext.PRODUCTS)
+                foreach (var product in products)
                 {
                     mssqlContext.Products.AddOrUpdate(p => p.ProductName,
                         new Product
                             {
-                                ProductName = product.PRODUCT_NAME, 
-                                Price = product.PRICE, 
-                                MeasureId = product.MEASURE_ID, 
-                                VendorId = product.VENDOR_ID
+                                ProductName = product.ProductName, 
+                                Price = product.Price, 
+                                MeasureId = product.MeasureId, 
+                                VendorId = product.VendorId
                             });
 
                     mssqlContext.SaveChanges();
@@ -82,24 +91,20 @@
 
         private void InsertDataFromExcelFile(string filePath)
         {
-            var defaultZipFileName = "Input\\Sample-Sales-Reports.zip";
+            var defaultZipFileName = "../../Input/Sample-Sales-Reports.zip";
 
             using (var zipFile = ZipFile.Read(filePath == null ? defaultZipFileName : filePath))
             using (var mssqlContext = new MSSQLContext())
             {
                 SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
 
-                var theDate = DateTime.Now;
-                var changed = false;
+                DateTime currentDate = DateTime.Now;
 
                 foreach (var zip in zipFile)
                 {
-                    changed = false;
-
                     if (zip.IsDirectory)
                     {
-                        theDate = DateTime.Parse(zip.FileName.Substring(0, zip.FileName.Length - 1));
-                        changed = true;
+                        currentDate = DateTime.Parse(zip.FileName.Substring(0, zip.FileName.Length - 1));
                     }
                     else
                     {
@@ -107,26 +112,30 @@
 
                         var excelFile = ExcelFile.Load(zip.FileName);
 
-                        var supermarketName = string.Empty;
+                        string supermarketName = string.Empty;
 
-                        foreach (var sheet in excelFile.Worksheets)
+                        foreach (var worksheet in excelFile.Worksheets)
                         {
-                            supermarketName = (string)sheet.Rows[1].AllocatedCells[1].Value;
+                            supermarketName = worksheet.Rows[1].AllocatedCells[1].StringValue;
                             supermarketName = supermarketName.Substring(13, supermarketName.Length - 14);
 
-                            mssqlContext.Supermarkets.AddOrUpdate(s => s.Name, new Supermarket { Name = supermarketName });
+                            mssqlContext.Supermarkets.AddOrUpdate(s => s.Name,
+                                new Supermarket
+                                {
+                                    Name = supermarketName
+                                });
 
                             mssqlContext.SaveChanges();
 
-                            var currentRowsLength = sheet.Rows.Count;
+                            int currentRowsLength = worksheet.Rows.Count;
 
-                            foreach (var row in sheet.Rows)
+                            foreach (var row in worksheet.Rows)
                             {
                                 if (row.Index > 2 && row.Index < currentRowsLength - 1)
                                 {
-                                    var productName = (string)row.AllocatedCells[1].Value;
-                                    var quantity = row.AllocatedCells[2].IntValue;
-                                    var unitPrice = decimal.Parse(row.AllocatedCells[3].DoubleValue.ToString());
+                                    string productName = row.AllocatedCells[1].StringValue;
+                                    int quantity = row.AllocatedCells[2].IntValue;
+                                    decimal unitPrice = decimal.Parse(row.AllocatedCells[3].DoubleValue.ToString());
 
                                     mssqlContext.SupermarketProducts.AddOrUpdate(
                                         new SupermarketProduct
@@ -137,8 +146,8 @@
                                                 SupermarketId =
                                                     mssqlContext.Supermarkets.First(
                                                         s => s.Name == supermarketName).Id, 
-                                                Quantity = quantity, 
-                                                SaleDate = theDate, 
+                                                Quantity = quantity,
+                                                SaleDate = currentDate, 
                                                 UnitPrice = unitPrice
                                             });
 
@@ -151,6 +160,8 @@
                         Directory.Delete(Directory.GetParent(zip.FileName).FullName);
                     }
                 }
+
+                this.Engine.Output.AppendLine(Messages.ExcelDataLoadedSuccess);
             }
         }
 

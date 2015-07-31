@@ -16,5 +16,10 @@
         public const string MysqlNewVExpensesAdded = "Expenses add or update - Done";
         public const string MysqlNewIncomeAdded = "Vendors income add or update - Done";
         public const string MysqDataTransferSuccess = "Data transfer from MSSQL to MySQL compleated successfully!";
+        public const string XmlExportSuccess = "Successfully generated xml file.";
+        public const string PdfGenerationSuccess = "Successfully generated pdf file.";
+        public const string ExcelDataLoadedSuccess = "Successfully loaded excel reports into sql server.";
+        public const string JsonReportsInMongoDB = "Successfully generated json reports.";
+        public const string ExportFromSQLiteAndMySQL = "Successfully exported data from SQLite and MySQL to Excel.";
     }
 }

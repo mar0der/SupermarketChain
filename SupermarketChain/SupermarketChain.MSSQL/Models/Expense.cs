@@ -26,6 +26,9 @@
         [ForeignKey("Vendor")]
         public int VendorId { get; set; }
         
+        [DefaultValue(false)]
+        public bool IsExportedToMysql { get; set; }
+
         public virtual Vendor Vendor { get; set; } 
     }
 }

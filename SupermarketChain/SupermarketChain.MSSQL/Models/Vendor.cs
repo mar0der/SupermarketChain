@@ -36,6 +36,9 @@
         [Required]
         public string VendorName { get; set; }
 
+        [DefaultValue(false)]
+        public bool IsExportedToMysql { get; set; }
+
         public virtual ICollection<Product> Products
         {
             get

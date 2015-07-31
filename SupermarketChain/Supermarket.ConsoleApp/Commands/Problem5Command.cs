@@ -1,16 +1,18 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Supermarket.ConsoleApp.Interfaces;
-using MongoDB;
-using MongoDB.Bson;
-using MongoDB.Bson.IO;
-using MongoDB.Driver;
-using MSSQLDB;
-using JsonConvert = Newtonsoft.Json.JsonConvert;
-
-namespace Supermarket.ConsoleApp.Commands
+﻿namespace Supermarket.ConsoleApp.Commands
 {
+    #region
+
+    using System.IO;
+    using System.Linq;
+    using Supermarket.ConsoleApp.Interfaces;
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+    using MSSQLDB;
+    using Supermarket.ConsoleApp.Constants;
+    using JsonConvert = Newtonsoft.Json.JsonConvert;
+
+    #endregion
+
     public class Problem5Command : AbstractCommand
     {
         public Problem5Command(IEngine engine) : base(engine)
@@ -32,9 +34,9 @@ namespace Supermarket.ConsoleApp.Commands
                 var salesByProduct = from supermarketProduct in mssqlContext.SupermarketProducts
                     group supermarketProduct by supermarketProduct.ProductId;
 
-                if (!Directory.Exists("Json-Reports"))
+                if (!Directory.Exists("Output/Json-Reports"))
                 {
-                    Directory.CreateDirectory("Json-Reports");
+                    Directory.CreateDirectory("Output/Json-Reports");
                 }
 
                 foreach (var productSale in salesByProduct)
@@ -60,7 +62,7 @@ namespace Supermarket.ConsoleApp.Commands
 
                     string jsonString = JsonConvert.SerializeObject(jsonProduct);
 
-                    StreamWriter streamWriter = new StreamWriter("Json-Reports\\" + theProduct.Id + ".json");
+                    StreamWriter streamWriter = new StreamWriter("Output/Json-Reports/" + theProduct.Id + ".json");
 
                     streamWriter.Write(jsonString);
 
@@ -74,6 +76,8 @@ namespace Supermarket.ConsoleApp.Commands
                         {"total-quantity-sold", totalQuantitySoldSum.ToString()},
                         {"total-incomes", totalIncomesSum.ToString()}
                     });
+
+                    this.Engine.Output.AppendLine(Messages.JsonReportsInMongoDB);
                 }
             }
         }

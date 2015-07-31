@@ -1,11 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Xml;
-using MSSQLDB;
-using Supermarket.ConsoleApp.Interfaces;
-
-namespace Supermarket.ConsoleApp.Commands
+﻿namespace Supermarket.ConsoleApp.Commands
 {
+    #region
+
+    using System.Linq;
+    using System.Xml;
+    using MSSQLDB;
+    using Supermarket.ConsoleApp.Constants;
+    using Supermarket.ConsoleApp.Interfaces;
+
+    #endregion
+
     public class Problem4Command : AbstractCommand
     {
         public Problem4Command(IEngine engine) : base(engine)
@@ -14,7 +18,7 @@ namespace Supermarket.ConsoleApp.Commands
         public override void Execute()
         {
             using (var mssqlContext = new MSSQLContext())
-            using (XmlWriter xmlWriter = XmlWriter.Create("Input\\Sales-by-Vendors-Report.xml"))
+            using (XmlWriter xmlWriter = XmlWriter.Create("Output/Sales-by-Vendors-Report.xml"))
             {
                 xmlWriter.WriteStartDocument();
                 xmlWriter.WriteStartElement("sales");
@@ -22,10 +26,10 @@ namespace Supermarket.ConsoleApp.Commands
                 var salesByVendors = from supermarketProduct in mssqlContext.SupermarketProducts
                     group supermarketProduct by supermarketProduct.Product.VendorId;
 
-
                 foreach (var sale in salesByVendors)
                 {
-                    var vendorName = mssqlContext.Vendors.Find(sale.Key).VendorName;
+                    string vendorName = mssqlContext.Vendors.Find(sale.Key).VendorName;
+
                     xmlWriter.WriteStartElement("sale");
                     xmlWriter.WriteAttributeString("vendor", vendorName); 
 
@@ -42,6 +46,8 @@ namespace Supermarket.ConsoleApp.Commands
                 
                 xmlWriter.WriteEndElement();
                 xmlWriter.WriteEndDocument();
+
+                this.Engine.Output.AppendLine(Messages.XmlExportSuccess);
             }
         }
     }

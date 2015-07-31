@@ -1,26 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Supermarket.ConsoleApp.Interfaces;
-using iTextSharp;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using MSSQLDB;
-
-namespace Supermarket.ConsoleApp.Commands
+﻿namespace Supermarket.ConsoleApp.Commands
 {
+    #region
+
+    using System.IO;
+    using System.Linq;
+    using Supermarket.ConsoleApp.Interfaces;
+    using iTextSharp.text;
+    using iTextSharp.text.pdf;
+    using MSSQLDB;
+    using Supermarket.ConsoleApp.Constants;
+
+    #endregion
+
     public class Problem3Command : AbstractCommand
     {
         public Problem3Command(IEngine engine) : base(engine)
         {
         }
 
+        private PdfPCell CreateBoldCell(string content, BaseColor color = null)
+        {
+            var cell = new PdfPCell(new Phrase(content));
+            cell.Phrase.Font.SetStyle(Font.BOLD);
+            cell.BackgroundColor = color;
+
+            return cell;
+        }
+
+        private PdfPCell CreateAlignmentedCell(string content, int alignment)
+        {
+            var cell = new PdfPCell(new Phrase(content));
+            cell.HorizontalAlignment = alignment;
+
+            return cell;
+        }
+
         public override void Execute()
         {
-            using (FileStream fileStream = new FileStream("Output\\testpdf.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
+            using (FileStream fileStream = new FileStream("Output/Aggregated-Sales-Report.pdf", FileMode.Create, FileAccess.Write, FileShare.None))
             using (Document pdfDocument = new Document())
             using (var mssqlContext = new MSSQLContext())
             {
@@ -30,10 +47,11 @@ namespace Supermarket.ConsoleApp.Commands
 
                 PdfPTable mainTable = new PdfPTable(5);
                 PdfPCell mainHeaderCell = new PdfPCell(new Phrase("Aggregated Sales Report"));
+                mainHeaderCell.Phrase.Font.SetStyle(Font.BOLD);
                 mainHeaderCell.Colspan = 5;
                 mainHeaderCell.HorizontalAlignment = 1;
-                mainTable.AddCell(mainHeaderCell);
 
+                mainTable.AddCell(mainHeaderCell);
 
                 var saleReportsByDate = from supermarketProduct in mssqlContext.SupermarketProducts
                     join product in mssqlContext.Products on supermarketProduct.ProductId equals product.Id
@@ -43,40 +61,46 @@ namespace Supermarket.ConsoleApp.Commands
 
                 decimal grandTotalSum = 0;
 
+                var productHeaderCell = CreateBoldCell("Product", new BaseColor(217, 217, 217));
+                var quantityHeaderCell = CreateBoldCell("Quantity", new BaseColor(217, 217, 217));
+                var unitPriceHeaderCell = CreateBoldCell("Unit Price", new BaseColor(217, 217, 217));
+                var locationHeaderCell = CreateBoldCell("Location", new BaseColor(217, 217, 217));
+                var sumHeaderCell = CreateBoldCell("Sum", new BaseColor(217, 217, 217));
+
                 foreach (var date in saleReportsByDate)
                 {
                     decimal totalSum = 0;
 
                     PdfPCell dateHeaderCell = new PdfPCell(new Phrase("Date: " + date.Key.ToString("dd-MMMM-yyyy")));
-                    dateHeaderCell.BackgroundColor = BaseColor.LIGHT_GRAY;
+                    dateHeaderCell.BackgroundColor = new BaseColor(242, 242, 242);
                     dateHeaderCell.Colspan = 5;
-                    dateHeaderCell.HorizontalAlignment = 0;
 
                     mainTable.AddCell(dateHeaderCell);
 
-                    mainTable.AddCell(new PdfPCell(new Phrase("Product")));
-                    mainTable.AddCell(new PdfPCell(new Phrase("Quantity")));
-                    mainTable.AddCell(new PdfPCell(new Phrase("Unit Price")));
-                    mainTable.AddCell(new PdfPCell(new Phrase("Location")));
-                    mainTable.AddCell(new PdfPCell(new Phrase("Sum")));
+                    mainTable.AddCell(productHeaderCell);
+                    mainTable.AddCell(quantityHeaderCell);
+                    mainTable.AddCell(unitPriceHeaderCell);
+                    mainTable.AddCell(locationHeaderCell);
+                    mainTable.AddCell(sumHeaderCell);
 
                     foreach (var record in date)
                     {
                         mainTable.AddCell(new PdfPCell(new Phrase(record.Product.ProductName)));
-                        mainTable.AddCell(new PdfPCell(new Phrase(record.Quantity.ToString())));
-                        mainTable.AddCell(new PdfPCell(new Phrase(record.UnitPrice.ToString())));
+                        mainTable.AddCell(CreateAlignmentedCell(record.Quantity.ToString(), Element.ALIGN_CENTER));
+                        mainTable.AddCell(CreateAlignmentedCell(record.UnitPrice.ToString(), Element.ALIGN_CENTER));
                         mainTable.AddCell(new PdfPCell(new Phrase(record.Supermarket.Name)));
-                        mainTable.AddCell(new PdfPCell(new Phrase((record.Quantity * record.UnitPrice).ToString())));
+                        mainTable.AddCell(CreateAlignmentedCell((record.Quantity * record.UnitPrice).ToString(), Element.ALIGN_RIGHT));
 
                         totalSum += record.Quantity * record.UnitPrice;
                     }
 
                     PdfPCell totalSumCellTitle = new PdfPCell(new Phrase("Total sum for " + date.Key.ToString("dd-MMMM-yyyy") + ":"));
                     totalSumCellTitle.Colspan = 4;
-                    totalSumCellTitle.HorizontalAlignment = 1;
+                    totalSumCellTitle.HorizontalAlignment = Element.ALIGN_RIGHT;
 
                     PdfPCell totalSumCell = new PdfPCell(new Phrase(totalSum.ToString()));
-                    totalSumCell.HorizontalAlignment = 1;
+                    totalSumCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                    totalSumCell.Phrase.Font.SetStyle(Font.BOLD);
 
                     mainTable.AddCell(totalSumCellTitle);
                     mainTable.AddCell(totalSumCell);
@@ -86,19 +110,20 @@ namespace Supermarket.ConsoleApp.Commands
 
                 PdfPCell grandTotalCellTitle = new PdfPCell(new Phrase("Grand total:"));
                 grandTotalCellTitle.Colspan = 4;
-                grandTotalCellTitle.HorizontalAlignment = 1;
-                grandTotalCellTitle.BackgroundColor = BaseColor.CYAN;
+                grandTotalCellTitle.HorizontalAlignment = Element.ALIGN_RIGHT;
+                grandTotalCellTitle.BackgroundColor = new BaseColor(182, 221, 232);
 
                 PdfPCell grandTotalCell = new PdfPCell(new Phrase(grandTotalSum.ToString()));
-                grandTotalCell.HorizontalAlignment = 1;
-                grandTotalCell.BackgroundColor = BaseColor.CYAN;
+                grandTotalCell.HorizontalAlignment = Element.ALIGN_RIGHT;
+                grandTotalCell.BackgroundColor = new BaseColor(182, 221, 232);
+                grandTotalCell.Phrase.Font.SetStyle(Font.BOLD);
 
                 mainTable.AddCell(grandTotalCellTitle);
                 mainTable.AddCell(grandTotalCell);
 
                 pdfDocument.Add(mainTable);
 
-                pdfWriter.Close();   
+                this.Engine.Output.AppendLine(Messages.PdfGenerationSuccess);
             }
         }
     }
